@@ -410,6 +410,10 @@ static NSString *_lastCopiedURL;
 @property(nonatomic, readonly) NSDictionary *scribeItem;
 @end
 
+@interface TFNScrollingSegmentedViewController : UIViewController
+- (id)parentViewController;
+@end
+
 @class FLEXAlert, FLEXAlertAction;
 
 typedef void (^FLEXAlertReveal)(void);

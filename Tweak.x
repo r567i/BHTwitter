@@ -1296,6 +1296,37 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 }
 %end
 
+%hook TFNScrollingSegmentedViewController
+
+-(NSInteger)selectedIndex {
+    NSInteger originalIndex = %orig;
+    if (originalIndex == 0) {
+        return 1;
+    }
+    return originalIndex;
+}
+
+-(NSInteger)initialSelectedIndex {
+    NSInteger originalIndex = %orig;
+    if (originalIndex == 0) {
+        return 1;
+    }
+    return originalIndex;
+}
+
+-(id)pagingViewController:(id)arg1 viewControllerAtIndexPath:(id)arg2 {
+    if ([[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) {
+        NSInteger rowIndex = [arg2 row];
+        if (rowIndex == 0) {
+            rowIndex = 1;
+        }
+        return %orig(arg1, [NSIndexPath indexPathForRow:rowIndex inSection:[arg2 section]]);
+    }
+    return %orig;
+}
+
+%end
+
 // MARK: Clean tracking from copied links: https://github.com/BandarHL/BHTwitter/issues/75
 %ctor {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
