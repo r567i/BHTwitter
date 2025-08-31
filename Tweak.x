@@ -276,9 +276,9 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     }
 
     T1URTTimelineStatusItemViewModel *fullTweet = tweet;
-    id<TFNTwitterUser> user = fullTweet.fromUser;
+    TFNTwitterUser user = fullTweet.fromUser;
     if (user && [user respondsToSelector:@selector(relationship)]) {
-        id<TFSTwitterRelationship> relationship = user.relationship;
+        TFSTwitterRelationship relationship = user.relationship;
         if (relationship && [relationship respondsToSelector:@selector(mutedByCurrentAccountState)]) {
             NSInteger muted = relationship.mutedByCurrentAccountState;
             if (muted == 1) {
