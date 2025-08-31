@@ -282,7 +282,8 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
             TFSTwitterRelationship *relationship = user.relationship;
             if (relationship && [relationship respondsToSelector:@selector(mutedByCurrentAccountState)]) {
                 NSInteger muted = relationship.mutedByCurrentAccountState;
-                if (muted == 1) {
+                NSInteger blocked = relationship.blockedByCurrentAccountState;
+                if (muted == 1 || blocked == 1) {
                     [_orig setHidden:true];
                 }
             }
@@ -356,6 +357,21 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     
     if ([BHTManager HidePromoted] && [tweet respondsToSelector:@selector(isPromoted)] && [tweet performSelector:@selector(isPromoted)]) {
         return 0;
+    }
+
+    if ([tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+        T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
+        TFNTwitterUser *user = tweetmodel.fromUser;
+        if (user && [user respondsToSelector:@selector(relationship)]) {
+            TFSTwitterRelationship *relationship = user.relationship;
+            if (relationship && [relationship respondsToSelector:@selector(mutedByCurrentAccountState)]) {
+                NSInteger muted = relationship.mutedByCurrentAccountState;
+                NSInteger blocked = relationship.blockedByCurrentAccountState;
+                if (muted == 1 || blocked == 1) {
+                    return 0;
+                }
+            }
+        }
     }
     
     if ([self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"]) {
