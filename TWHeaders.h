@@ -380,14 +380,14 @@ static NSString *_lastCopiedURL;
 @end
 
 @interface TFNTwitterUser : NSObject
-@property(readonly, nonatomic) <TFSTwitterRelationship> *relationship;
+@property(readonly, nonatomic) TFSTwitterRelationship *relationship;
 @end
 
 @interface T1URTTimelineStatusItemViewModel : NSObject
 @property(nonatomic, readonly) NSString *text;
 @property(nonatomic, readonly) _Bool isPromoted;
 @property(nonatomic, retain) id <TFNTwitterStatusBanner> banner;
-@property(nonatomic, readonly) <TFNTwitterUser> *fromUser;
+@property(nonatomic, readonly) TFNTwitterUser *fromUser;
 @end
 
 @interface TFNTwitterStatus : NSObject
