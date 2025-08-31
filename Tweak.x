@@ -280,7 +280,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
         TFNTwitterUser *user = tweetmodel.fromUser;
         if (user && [user respondsToSelector:@selector(relationship)]) {
             TFSTwitterRelationship *relationship = user.relationship;
-            if (relationship && [relationship respondsToSelector:@selector(mutedByCurrentAccountState)]) {
+            if (relationship) {
                 NSInteger muted = relationship.mutedByCurrentAccountState;
                 NSInteger blocked = relationship.blockedByCurrentAccountState;
                 if (muted == 1 || blocked == 1) {
@@ -364,7 +364,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
         TFNTwitterUser *user = tweetmodel.fromUser;
         if (user && [user respondsToSelector:@selector(relationship)]) {
             TFSTwitterRelationship *relationship = user.relationship;
-            if (relationship && [relationship respondsToSelector:@selector(mutedByCurrentAccountState)]) {
+            if (relationship) {
                 NSInteger muted = relationship.mutedByCurrentAccountState;
                 NSInteger blocked = relationship.blockedByCurrentAccountState;
                 if (muted == 1 || blocked == 1) {
