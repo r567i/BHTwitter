@@ -275,19 +275,20 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
         [_orig setHidden:YES];
     }
 
-    T1URTTimelineStatusItemViewModel *fullTweet = tweet;
-    TFNTwitterUser user = fullTweet.fromUser;
-    if (user && [user respondsToSelector:@selector(relationship)]) {
-        TFSTwitterRelationship relationship = user.relationship;
-        if (relationship && [relationship respondsToSelector:@selector(mutedByCurrentAccountState)]) {
-            NSInteger muted = relationship.mutedByCurrentAccountState;
-            if (muted == 1) {
-                [_orig setHidden:true];
+    if ([tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+        T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
+        TFNTwitterUser *user = tweetmodel.fromUser;
+        if (user && [user respondsToSelector:@selector(relationship)]) {
+            TFSTwitterRelationship *relationship = user.relationship;
+            if (relationship && [relationship respondsToSelector:@selector(mutedByCurrentAccountState)]) {
+                NSInteger muted = relationship.mutedByCurrentAccountState;
+                if (muted == 1) {
+                    [_orig setHidden:true];
+                }
             }
         }
     }
-    
-    
+
     if ([self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"]) {
         if ([BHTManager hideWhoToFollow]) {
             if ([class_name isEqualToString:@"T1URTTimelineUserItemViewModel"] || [class_name isEqualToString:@"T1TwitterSwift.URTTimelineCarouselViewModel"] || [class_name isEqualToString:@"TwitterURT.URTModuleHeaderViewModel"] || [class_name isEqualToString:@"TwitterURT.URTModuleFooterViewModel"]) {
@@ -326,6 +327,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     
     if ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"]) {
         if ([tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+            T1URTTimelineStatusItemViewModel *fullTweet = tweet;
             if ([BHTManager HideTopics]) {
                 if ((fullTweet.banner != nil) && [fullTweet.banner isKindOfClass:%c(TFNTwitterURTTimelineStatusTopicBanner)]) {
                     [_orig setHidden:true];
