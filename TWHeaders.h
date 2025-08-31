@@ -374,10 +374,20 @@ static NSString *_lastCopiedURL;
 @interface TFNTwitterURTTimelineStatusTopicBanner : TFNTwitterURTTimelineStatusBanner
 @end
 
+@interface TFSTwitterRelationship : NSObject
+@property(nonatomic, readonly) NSInteger mutedByCurrentAccountState;
+@property(nonatomic, readonly) NSInteger blockedByCurrentAccountState;
+@end
+
+@interface TFNTwitterUser : NSObject
+@property(readonly, nonatomic) <TFSTwitterRelationship> *relationship;
+@end
+
 @interface T1URTTimelineStatusItemViewModel : NSObject
 @property(nonatomic, readonly) NSString *text;
 @property(nonatomic, readonly) _Bool isPromoted;
 @property(nonatomic, retain) id <TFNTwitterStatusBanner> banner;
+@property(nonatomic, readonly) <TFNTwitterUser> *fromUser;
 @end
 
 @interface TFNTwitterStatus : NSObject

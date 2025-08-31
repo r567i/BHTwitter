@@ -271,16 +271,20 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     id tweet = [self itemAtIndexPath:arg2];
     NSString *class_name = NSStringFromClass([tweet classForCoder]);
 
-    if ([arg2 isKindOfClass:[NSIndexPath class]]) {
-        NSInteger row = [(NSIndexPath *)arg2 row];
-        if (row % 2 == 0) {
-            NSLog(@"[DEBUG] Hiding even row: %ld", (long)row);
-            [_orig setHidden:YES];
-        }
-    }
-
     if ([BHTManager HidePromoted] && [tweet respondsToSelector:@selector(isPromoted)] && [tweet performSelector:@selector(isPromoted)]) {
         [_orig setHidden:YES];
+    }
+
+    T1URTTimelineStatusItemViewModel *fullTweet = tweet;
+    id<TFNTwitterUser> user = fullTweet.fromUser;
+    if (user && [user respondsToSelector:@selector(relationship)]) {
+        id<TFSTwitterRelationship> relationship = user.relationship;
+        if (relationship && [relationship respondsToSelector:@selector(mutedByCurrentAccountState)]) {
+            NSInteger muted = relationship.mutedByCurrentAccountState;
+            if (muted == 1) {
+                [_orig setHidden:true];
+            }
+        }
     }
     
     
@@ -322,7 +326,6 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     
     if ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"]) {
         if ([tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-            T1URTTimelineStatusItemViewModel *fullTweet = tweet;
             if ([BHTManager HideTopics]) {
                 if ((fullTweet.banner != nil) && [fullTweet.banner isKindOfClass:%c(TFNTwitterURTTimelineStatusTopicBanner)]) {
                     [_orig setHidden:true];
@@ -348,15 +351,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 - (double)tableView:(id)arg1 heightForRowAtIndexPath:(id)arg2 {
     id tweet = [self itemAtIndexPath:arg2];
     NSString *class_name = NSStringFromClass([tweet classForCoder]);
-
-    if ([arg2 isKindOfClass:[NSIndexPath class]]) {
-        NSInteger row = [(NSIndexPath *)arg2 row];
-        if (row % 2 == 0) {
-            NSLog(@"[DEBUG] Hiding even row: %ld", (long)row);
-            return 0;
-        }
-    }
-
+    
     if ([BHTManager HidePromoted] && [tweet respondsToSelector:@selector(isPromoted)] && [tweet performSelector:@selector(isPromoted)]) {
         return 0;
     }
