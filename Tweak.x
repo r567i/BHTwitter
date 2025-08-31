@@ -270,7 +270,15 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     UITableViewCell *_orig = %orig;
     id tweet = [self itemAtIndexPath:arg2];
     NSString *class_name = NSStringFromClass([tweet classForCoder]);
-    
+
+    if ([arg2 isKindOfClass:[NSIndexPath class]]) {
+        NSInteger row = [(NSIndexPath *)arg2 row];
+        if (row % 2 == 0) {
+            NSLog(@"[DEBUG] Hiding even row: %ld", (long)row);
+            [_orig setHidden:YES];
+        }
+    }
+
     if ([BHTManager HidePromoted] && [tweet respondsToSelector:@selector(isPromoted)] && [tweet performSelector:@selector(isPromoted)]) {
         [_orig setHidden:YES];
     }
@@ -340,7 +348,15 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 - (double)tableView:(id)arg1 heightForRowAtIndexPath:(id)arg2 {
     id tweet = [self itemAtIndexPath:arg2];
     NSString *class_name = NSStringFromClass([tweet classForCoder]);
-    
+
+    if ([arg2 isKindOfClass:[NSIndexPath class]]) {
+        NSInteger row = [(NSIndexPath *)arg2 row];
+        if (row % 2 == 0) {
+            NSLog(@"[DEBUG] Hiding even row: %ld", (long)row);
+            return 0;
+        }
+    }
+
     if ([BHTManager HidePromoted] && [tweet respondsToSelector:@selector(isPromoted)] && [tweet performSelector:@selector(isPromoted)]) {
         return 0;
     }
