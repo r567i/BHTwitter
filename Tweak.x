@@ -266,7 +266,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 // MARK: hide ADs
 // credit goes to haoict https://github.com/haoict/twitter-no-ads
 %hook TFNItemsDataViewController
-- (BOOL)shouldHideTweetForUser:(TFNTwitterUser *)user {
+%new - (BOOL)shouldHideTweetForUser:(TFNTwitterUser *)user {
     if (!user || ![user respondsToSelector:@selector(relationship)]) {
         return NO;
     }
