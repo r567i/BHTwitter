@@ -290,7 +290,7 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
     }
 
     if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
-        [class_name.parentViewController isEqualToString:@"THFHomeTimelineItemsViewController"] &&
+        ![self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"] &&
         [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
         if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
@@ -369,7 +369,7 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
     }
 
     if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
-        [class_name.parentViewController isEqualToString:@"THFHomeTimelineItemsViewController"] &&
+        ![self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"] &&
         [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
         if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
