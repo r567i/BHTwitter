@@ -875,7 +875,11 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
         return true;
     }
 
-    if ([BHTManager testFeatures] && [key isEqualToString:@"explore_relaunch_enable_immersive_player_across_twitter"]) {
+    if ([key isEqualToString:@"home_timeline_start_at_top_latest_enabled"] || [key isEqualToString:@"conversational_replies_ios_pinned_replies_creation_enabled"]) {
+        return true;
+    }
+
+    if ([key isEqualToString:@"explore_relaunch_enable_immersive_player_across_twitter"]) {
         return false;
     }
     
@@ -1332,11 +1336,10 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 %hook NSLocale
 + (NSLocale *)currentLocale {
     if ([BHTManager testFeatures]) {
-        return [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+        return [[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"];
     }
     return %orig;
 }
-
 %end
 
 %hook TFNScrollingSegmentedViewController
