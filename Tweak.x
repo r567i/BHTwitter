@@ -266,22 +266,6 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 // MARK: hide ADs
 // credit goes to haoict https://github.com/haoict/twitter-no-ads
 %hook TFNItemsDataViewController
-%new - (BOOL)shouldHideTweetForUser:(TFNTwitterUser *)user {
-    if (!user || ![user respondsToSelector:@selector(relationship)]) {
-        return NO;
-    }
-    TFSTwitterRelationship *relationship = user.relationship;
-    if (!relationship) {
-        return NO;
-    }
-    NSInteger muted = relationship.mutedByCurrentAccountState;
-    NSInteger blocked = relationship.blockedByCurrentAccountState;
-    if (([BHTManager hideBlockedAccountTweets] && blocked == 1) ||
-        ([BHTManager hideMutedAccountTweets] && muted == 1)) {
-        return YES;
-    }
-    return NO;
-}
 - (id)tableViewCellForItem:(id)arg1 atIndexPath:(id)arg2 {
     UITableViewCell *_orig = %orig;
     id tweet = [self itemAtIndexPath:arg2];
@@ -294,8 +278,8 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
         [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
-        if ([self shouldHideTweetForUser:tweetmodel.fromUser] ||
-            [self shouldHideTweetForUser:tweetmodel.representedFromUser]) {
+        if ([self ShouldHideTweetForUser:tweetmodel.fromUser] ||
+            [self ShouldHideTweetForUser:tweetmodel.representedFromUser]) {
             [_orig setHidden:true];
         }
     }
@@ -372,8 +356,8 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
         [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
-        if ([self shouldHideTweetForUser:tweetmodel.fromUser] ||
-            [self shouldHideTweetForUser:tweetmodel.representedFromUser]) {
+        if ([self ShouldHideTweetForUser:tweetmodel.fromUser] ||
+            [self ShouldHideTweetForUser:tweetmodel.representedFromUser]) {
             return 0;
         }
     }
