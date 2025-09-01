@@ -1330,43 +1330,52 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 %end
 
 %hook NSLocale
-if ([BHTManager testFeatures]) {
-    + (NSLocale *)currentLocale {
++ (NSLocale *)currentLocale {
+    if ([BHTManager testFeatures]) {
         return [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     }
+    return %orig
 }
+
 %end
 
 %hook TFNScrollingSegmentedViewController
-
-if ([BHTManager testFeatures]) {
-    -(NSInteger)selectedIndex {
-        NSInteger originalIndex = %orig;
+    if ([BHTManager testFeatures]) {
+        
+    }
+-(NSInteger)selectedIndex {
+    NSInteger originalIndex = %orig;
+    if ([BHTManager testFeatures]) {
         if (originalIndex == 0) {
             return 1;
         }
-        return originalIndex;
     }
+    return originalIndex;
+}
 
-    -(NSInteger)initialSelectedIndex {
-        NSInteger originalIndex = %orig;
+-(NSInteger)initialSelectedIndex {
+    NSInteger originalIndex = %orig;
+    if ([BHTManager testFeatures]) {
         if (originalIndex == 0) {
             return 1;
         }
-        return originalIndex;
     }
+    return originalIndex;
+}
 
-    -(id)pagingViewController:(id)arg1 viewControllerAtIndexPath:(id)arg2 {
-        if ([[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) {
-            NSInteger rowIndex = [arg2 row];
+-(id)pagingViewController:(id)arg1 viewControllerAtIndexPath:(id)arg2 {
+    if ([[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) {
+        NSInteger rowIndex = [arg2 row];
+        if ([BHTManager testFeatures]) {
             if (rowIndex == 0) {
                 rowIndex = 1;
             }
             return %orig(arg1, [NSIndexPath indexPathForRow:rowIndex inSection:[arg2 section]]);
         }
-        return %orig;
     }
+    return %orig;
 }
+
 
 %end
 
