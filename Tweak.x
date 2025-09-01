@@ -39,6 +39,20 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     }
 }
 
+static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
+    if (!user || ![user respondsToSelector:@selector(relationship)]) {
+        return NO;
+    }
+    TFSTwitterRelationship *relationship = user.relationship;
+    if (!relationship) return NO;
+    
+    NSInteger muted = relationship.mutedByCurrentAccountState;
+    NSInteger blocked = relationship.blockedByCurrentAccountState;
+    
+    return (([BHTManager hideBlockedAccountTweets] && blocked == 1) ||
+            ([BHTManager hideMutedAccountTweets] && muted == 1));
+}
+
 // MARK: Clean cache and Padlock
 %hook T1AppDelegate
 - (_Bool)application:(UIApplication *)application didFinishLaunchingWithOptions:(id)arg2 {
