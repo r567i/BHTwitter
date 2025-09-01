@@ -169,7 +169,7 @@
 + (BOOL)HideTopics {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_topics"];
 }
-+ (BOOL)HideBlockedOrMutedAccountTweets {
++ (BOOL)hideBlockedOrMutedAccountTweets {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_blocked_or_muted_account_tweets"];
 }
 + (BOOL)DisableVODCaptions {
@@ -259,7 +259,7 @@
 + (BOOL)customVoice {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"custom_voice_upload"];
 }
-+ (BOOL)TestFeatures {
++ (BOOL)testFeatures {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"test_features"];
 }
 + (UIViewController *)BHTSettingsWithAccount:(TFNTwitterAccount *)twAccount {
