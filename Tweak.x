@@ -292,8 +292,8 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
     if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
         [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
-        if ([ShouldHideTweetForUser:tweetmodel.fromUser] ||
-            [ShouldHideTweetForUser:tweetmodel.representedFromUser]) {
+        if (ShouldHideTweetForUser:tweetmodel.fromUser ||
+            ShouldHideTweetForUser:tweetmodel.representedFromUser) {
             [_orig setHidden:true];
         }
     }
@@ -370,8 +370,8 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
     if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
         [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
-        if ([ShouldHideTweetForUser:tweetmodel.fromUser] ||
-            [ShouldHideTweetForUser:tweetmodel.representedFromUser]) {
+        if (ShouldHideTweetForUser:tweetmodel.fromUser ||
+            ShouldHideTweetForUser:tweetmodel.representedFromUser) {
             return 0;
         }
     }
