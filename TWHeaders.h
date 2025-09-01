@@ -388,6 +388,7 @@ static NSString *_lastCopiedURL;
 @property(nonatomic, readonly) _Bool isPromoted;
 @property(nonatomic, retain) id <TFNTwitterStatusBanner> banner;
 @property(nonatomic, readonly) TFNTwitterUser *fromUser;
+@property(nonatomic, readonly) TFNTwitterUser *representedFromUser;
 @end
 
 @interface TFNTwitterStatus : NSObject
