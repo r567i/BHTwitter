@@ -31,6 +31,7 @@
 + (BOOL)FollowConfirm;
 + (BOOL)HidePromoted;
 + (BOOL)HideTopics;
++ (BOOL)HideBlockedOrMutedAccountTweets;
 + (BOOL)DisableVODCaptions;
 + (BOOL)Padlock;
 + (BOOL)OldStyle;
@@ -57,5 +58,6 @@
 + (bool)backgroundImage;
 + (BOOL)hideBookmarkButton;
 + (BOOL)customVoice;
++ (BOOL)TestFeatures;
 @end
 

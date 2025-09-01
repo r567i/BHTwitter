@@ -275,7 +275,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
         [_orig setHidden:YES];
     }
 
-    if ([tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+    if ([BHTManager hideBlockedOrMutedAccountTweets] && [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
         TFNTwitterUser *user = tweetmodel.fromUser;
         if (user && [user respondsToSelector:@selector(relationship)]) {
@@ -359,7 +359,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
         return 0;
     }
 
-    if ([tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+    if ([BHTManager hideBlockedOrMutedAccountTweets] && [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
         TFNTwitterUser *user = tweetmodel.fromUser;
         if (user && [user respondsToSelector:@selector(relationship)]) {
@@ -874,6 +874,10 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     if ([key isEqualToString:@"conversational_replies_ios_pinned_replies_consumption_enabled"] || [key isEqualToString:@"conversational_replies_ios_pinned_replies_creation_enabled"]) {
         return true;
     }
+
+    if ([BHTManager testFeatures] && [key isEqualToString:@"explore_relaunch_enable_immersive_player_across_twitter"]) {
+        return false;
+    }
     
     return %orig;
 }
@@ -1325,33 +1329,43 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 }
 %end
 
+%hook NSLocale
+if ([BHTManager testFeatures]) {
+    + (NSLocale *)currentLocale {
+        return [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+    }
+}
+%end
+
 %hook TFNScrollingSegmentedViewController
 
--(NSInteger)selectedIndex {
-    NSInteger originalIndex = %orig;
-    if (originalIndex == 0) {
-        return 1;
-    }
-    return originalIndex;
-}
-
--(NSInteger)initialSelectedIndex {
-    NSInteger originalIndex = %orig;
-    if (originalIndex == 0) {
-        return 1;
-    }
-    return originalIndex;
-}
-
--(id)pagingViewController:(id)arg1 viewControllerAtIndexPath:(id)arg2 {
-    if ([[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) {
-        NSInteger rowIndex = [arg2 row];
-        if (rowIndex == 0) {
-            rowIndex = 1;
+if ([BHTManager testFeatures]) {
+    -(NSInteger)selectedIndex {
+        NSInteger originalIndex = %orig;
+        if (originalIndex == 0) {
+            return 1;
         }
-        return %orig(arg1, [NSIndexPath indexPathForRow:rowIndex inSection:[arg2 section]]);
+        return originalIndex;
     }
-    return %orig;
+
+    -(NSInteger)initialSelectedIndex {
+        NSInteger originalIndex = %orig;
+        if (originalIndex == 0) {
+            return 1;
+        }
+        return originalIndex;
+    }
+
+    -(id)pagingViewController:(id)arg1 viewControllerAtIndexPath:(id)arg2 {
+        if ([[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) {
+            NSInteger rowIndex = [arg2 row];
+            if (rowIndex == 0) {
+                rowIndex = 1;
+            }
+            return %orig(arg1, [NSIndexPath indexPathForRow:rowIndex inSection:[arg2 section]]);
+        }
+        return %orig;
+    }
 }
 
 %end

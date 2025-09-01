@@ -149,6 +149,8 @@
 
         PSSpecifier *hideTopics = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_OPTION_DETAIL_TITLE"] key:@"hide_topics" defaultValue:false changeAction:nil];
         
+        PSSpecifier *hideBlockedOrMutedAccountTweets = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_BLOCKED_OR_MUTED_ACCOUNT_TWEETS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_BLOCKED_OR_MUTED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE"] key:@"hide_blocked_or_muted_account_tweets" defaultValue:false changeAction:nil];
+        
         PSSpecifier *hideWhoToFollow = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_WHO_FOLLOW_OPTION"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_WHO_FOLLOW_OPTION_DETAIL_TITLE"] key:@"hide_who_to_follow" defaultValue:false changeAction:nil];
         
         PSSpecifier *hideTopicsToFollow = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_TO_FOLLOW_OPTION"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_TO_FOLLOW_OPTION_DETAIL_TITLE"] key:@"hide_topics_to_follow" defaultValue:false changeAction:nil];
@@ -222,6 +224,8 @@
         // debug section
         PSSpecifier *flex = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FLEX_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FLEX_OPTION_DETAIL_TITLE"] key:@"flex_twitter" defaultValue:false changeAction:@selector(FLEXAction:)];
         
+        PSSpecifier *testFeatures = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TEST_FEATURES_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TEST_FEATURES_OPTION_DETAIL_TITLE"] key:@"test_features" defaultValue:false changeAction:nil];
+        
         // legal section
         PSSpecifier *acknowledgements = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"LEGAL_BUTTON_TITLE"] detailTitle:nil dynamicRule:nil action:@selector(showAcknowledgements:)];
         
@@ -238,6 +242,7 @@
             hideAds,
             customVoice,
             hideTopics,
+            hideBlockedOrMutedAccountTweets,
             hideWhoToFollow,
             hideTopicsToFollow,
             hidePremiumOffer,
@@ -283,6 +288,7 @@
             
             debug, // 4
             flex,
+            testFeatures,
             
             developer, // 5
             bandarHL,
