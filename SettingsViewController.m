@@ -149,7 +149,9 @@
 
         PSSpecifier *hideTopics = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_OPTION_DETAIL_TITLE"] key:@"hide_topics" defaultValue:false changeAction:nil];
         
-        PSSpecifier *hideBlockedOrMutedAccountTweets = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_BLOCKED_OR_MUTED_ACCOUNT_TWEETS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_BLOCKED_OR_MUTED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE"] key:@"hide_blocked_or_muted_account_tweets" defaultValue:false changeAction:nil];
+        PSSpecifier *hideBlockedAccountTweets = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_BLOCKED_ACCOUNT_TWEETS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_BLOCKED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE"] key:@"hide_blocked_account_tweets" defaultValue:false changeAction:nil];
+        
+        PSSpecifier *hideMutedAccountTweets = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_MUTED_ACCOUNT_TWEETS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_MUTED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE"] key:@"hide_muted_account_tweets" defaultValue:false changeAction:nil];
         
         PSSpecifier *hideWhoToFollow = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_WHO_FOLLOW_OPTION"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_WHO_FOLLOW_OPTION_DETAIL_TITLE"] key:@"hide_who_to_follow" defaultValue:false changeAction:nil];
         
@@ -214,6 +216,8 @@
         PSSpecifier *forceFullFrame = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FORCE_TWEET_FULL_FRAME_TITLE"] detailTitle:nil key:@"force_tweet_full_frame" defaultValue:false changeAction:nil];
         
         PSSpecifier *showScrollIndicator = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"SHOW_SCOLL_INDICATOR_OPTION_TITLE"] detailTitle:nil key:@"showScollIndicator" defaultValue:false changeAction:nil];
+
+        PSSpecifier *alwaysFollowingPage = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"ALWAYS_FOLLOWING_PAGE_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE"] key:@"always_following_page" defaultValue:false changeAction:nil];
         
         PSSpecifier *font = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FONT_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FONT_OPTION_DETAIL_TITLE"] key:@"en_font" defaultValue:false changeAction:nil];
         
@@ -242,7 +246,8 @@
             hideAds,
             customVoice,
             hideTopics,
-            hideBlockedOrMutedAccountTweets,
+            hideBlockedAccountTweets,
+            hideMutedAccountTweets,
             hideWhoToFollow,
             hideTopicsToFollow,
             hidePremiumOffer,
@@ -279,6 +284,7 @@
             hideBookmarkButton,
             forceFullFrame,
             showScrollIndicator,
+            alwaysFollowingPage,
             font,
             regularFontsPicker,
             boldFontsPicker,

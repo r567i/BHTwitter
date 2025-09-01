@@ -44,8 +44,11 @@
 "HIDE_TOPICS_OPTION_TITLE" = "Hide topics tweets";
 "HIDE_TOPICS_OPTION_DETAIL_TITLE" = "Remove all topics tweets from the timeline.";
 
-"HIDE_BLOCKED_OR_MUTED_ACCOUNT_TWEETS_OPTION_TITLE" = "Hide Blocked/Muted account tweets";
-"HIDE_BLOCKED_OR_MUTED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE" = "Remove all Blocked/Muted account tweets in Twitter.";
+"HIDE_BLOCKED_ACCOUNT_TWEETS_OPTION_TITLE" = "Hide Blocked account tweets";
+"HIDE_BLOCKED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE" = "Remove all Blocked account tweets in Twitter.";
+
+"HIDE_MUTED_ACCOUNT_TWEETS_OPTION_TITLE" = "Hide Muted account tweets";
+"HIDE_MUTED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE" = "Remove all Muted account tweets in Twitter.";
 
 "HIDE_WHO_FOLLOW_OPTION" = "Hide Who to follow section";
 "HIDE_WHO_FOLLOW_OPTION_DETAIL_TITLE" = "Hide Who to follow section in Profiles";

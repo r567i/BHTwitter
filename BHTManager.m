@@ -169,8 +169,11 @@
 + (BOOL)HideTopics {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_topics"];
 }
-+ (BOOL)hideBlockedOrMutedAccountTweets {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_blocked_or_muted_account_tweets"];
++ (BOOL)hideBlockedAccountTweets {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_blocked_account_tweets"];
+}
++ (BOOL)hideMutedAccountTweets {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_muted_account_tweets"];
 }
 + (BOOL)DisableVODCaptions {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"dis_VODCaptions"];

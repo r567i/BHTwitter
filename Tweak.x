@@ -275,15 +275,16 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
         [_orig setHidden:YES];
     }
 
-    if ([BHTManager hideBlockedOrMutedAccountTweets] && [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+    if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) && [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
         TFNTwitterUser *user = tweetmodel.fromUser;
         if (user && [user respondsToSelector:@selector(relationship)]) {
             TFSTwitterRelationship *relationship = user.relationship;
             if (relationship) {
-                NSInteger muted = relationship.mutedByCurrentAccountState;
                 NSInteger blocked = relationship.blockedByCurrentAccountState;
-                if (muted == 1 || blocked == 1) {
+                NSInteger muted = relationship.mutedByCurrentAccountState;
+                if (([BHTManager hideBlockedAccountTweets] && blocked == 1) || 
+                    ([BHTManager hideMutedAccountTweets] && muted == 1)) {
                     [_orig setHidden:true];
                 }
             }
@@ -359,7 +360,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
         return 0;
     }
 
-    if ([BHTManager hideBlockedOrMutedAccountTweets] && [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+    if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) && [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
         TFNTwitterUser *user = tweetmodel.fromUser;
         if (user && [user respondsToSelector:@selector(relationship)]) {
@@ -367,7 +368,8 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
             if (relationship) {
                 NSInteger muted = relationship.mutedByCurrentAccountState;
                 NSInteger blocked = relationship.blockedByCurrentAccountState;
-                if (muted == 1 || blocked == 1) {
+                if (([BHTManager hideBlockedAccountTweets] && blocked == 1) || 
+                    ([BHTManager hideMutedAccountTweets] && muted == 1)) {
                     return 0;
                 }
             }
@@ -1333,32 +1335,19 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 }
 %end
 
-%hook NSLocale
-+ (NSLocale *)currentLocale {
-    if ([BHTManager testFeatures]) {
-        return [[NSLocale alloc] initWithLocaleIdentifier:@"ja_JP"];
-    }
-    return %orig;
-}
-%end
-
 %hook TFNScrollingSegmentedViewController
 -(NSInteger)selectedIndex {
     NSInteger originalIndex = %orig;
-    if ([BHTManager testFeatures]) {
-        if (originalIndex == 0) {
-            return 1;
-        }
+    if ([BHTManager alwaysFollowingPage] && originalIndex == 0) {
+        return 1;
     }
     return originalIndex;
 }
 
 -(NSInteger)initialSelectedIndex {
     NSInteger originalIndex = %orig;
-    if ([BHTManager testFeatures]) {
-        if (originalIndex == 0) {
-            return 1;
-        }
+    if ([BHTManager alwaysFollowingPage] && originalIndex == 0) {
+        return 1;
     }
     return originalIndex;
 }
@@ -1366,7 +1355,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 -(id)pagingViewController:(id)arg1 viewControllerAtIndexPath:(id)arg2 {
     if ([[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) {
         NSInteger rowIndex = [arg2 row];
-        if ([BHTManager testFeatures]) {
+        if ([BHTManager alwaysFollowingPage]) {
             if (rowIndex == 0) {
                 rowIndex = 1;
             }
