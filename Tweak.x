@@ -1334,15 +1334,12 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     if ([BHTManager testFeatures]) {
         return [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     }
-    return %orig
+    return %orig;
 }
 
 %end
 
 %hook TFNScrollingSegmentedViewController
-    if ([BHTManager testFeatures]) {
-        
-    }
 -(NSInteger)selectedIndex {
     NSInteger originalIndex = %orig;
     if ([BHTManager testFeatures]) {
@@ -1375,7 +1372,6 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     }
     return %orig;
 }
-
 
 %end
 
