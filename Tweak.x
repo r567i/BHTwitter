@@ -1345,18 +1345,33 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
     }
     return originalIndex;
 }
-
--(NSInteger)initialSelectedIndex {
+-(NSInteger)selectedIndex {
     NSInteger originalIndex = %orig;
-    if ([BHTManager alwaysFollowingPage] && originalIndex == 0) {
+    if ([BHTManager alwaysFollowingPage] &&
+        [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")] &&
+        originalIndex == 0) {
         return 1;
     }
     return originalIndex;
 }
 
-- (void)setSelectedIndex:(NSInteger)newIndex {
-   NSInteger forcedIndex = (newIndex == 0) ? 1 : newIndex;  
-   %orig(forcedIndex);
+-(NSInteger)initialSelectedIndex {
+    NSInteger originalIndex = %orig;
+    if ([BHTManager alwaysFollowingPage] && 
+        [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")] &&
+        originalIndex == 0) {
+        return 1;
+    }
+    return originalIndex;
+}
+
+- (void)setSelectedIndex:(NSInteger)originalIndex {
+    if ([BHTManager alwaysFollowingPage] && 
+        [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")] &&
+        originalIndex == 0) {
+        return %orig(1);;
+    }
+   return %orig(originalIndex);
 }
 
 -(id)pagingViewController:(id)arg1 viewControllerAtIndexPath:(id)arg2 {
