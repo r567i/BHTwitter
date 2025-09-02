@@ -289,16 +289,16 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         [_orig setHidden:YES];
     }
 
-    if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
-        ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
-        [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
-        [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-        T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
-        if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
-            ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
-            [_orig setHidden:true];
-        }
-    }
+    // if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
+    //     ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
+    //     [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
+    //     [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+    //     T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
+    //     if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
+    //         ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+    //         [_orig setHidden:true];
+    //     }
+    // }
 
     if ([self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"]) {
         if ([BHTManager hideWhoToFollow]) {
@@ -366,16 +366,16 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         return 0;
     }
 
-    if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
-        ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
-        [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
-        [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-        T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
-        if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
-            ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
-            return 0;
-        }
-    }
+    // if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
+    //     ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
+    //     [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
+    //     [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+    //     T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
+    //     if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
+    //         ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+    //         return 0;
+    //     }
+    // }
     
     if ([self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"]) {
         if ([BHTManager hideWhoToFollow]) {
@@ -1528,8 +1528,10 @@ static NSArray *tweetFilter(NSArray *sections) {
         }
     }
     if ([BHTManager testFeatures]) {
+        NSLog(@"testFeatures");
         BOOL inListDetailsContentViewController = BHT_isInListDetailsContentViewController((UIViewController *)self);
         if (inListDetailsContentViewController) {
+            NSLog(@"sections: %@", sections);
             NSArray *flatItems = tweetFilter(sections);
             NSArray *wrapped = @[ flatItems ];
             sections = [wrapped copy];
