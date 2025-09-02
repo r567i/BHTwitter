@@ -1498,8 +1498,6 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
                     !ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
                     [filteredSections addObject:item];
                 }
-            } else {
-                [filteredSections addObject:item];
             }
         }
         sections = [filteredSections copy];
