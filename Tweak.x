@@ -1374,25 +1374,25 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
 %end
 
 // https://github.com/BandarHL/BHTwitter/commit/17e72a2d3c1ce40805e08eb0561305184200a490
-%hook TFNScrollingHorizontalLabelView
-- (NSUInteger)startingIndex {
-    if ([BHTManager alwaysFollowingPage] && [BHTManager testFeatures]) {
-        UIViewController *Navigation = self.NearestViewController;
-        if ([Navigation.childViewControllers[0] isKindOfClass:%c(THFHomeTimelineContainerViewController)] || [Navigation.childViewControllers[0] isKindOfClass:%c(T1HomeTimelineContainerViewController)]) {
-            [self setValue:[NSNumber numberWithInteger:1] forKey:@"_startingIndex"];
-            return 1;
-        }
-    }
-    return %orig;
-}
+// %hook TFNScrollingHorizontalLabelView
+// - (NSUInteger)startingIndex {
+//     if ([BHTManager alwaysFollowingPage] && [BHTManager testFeatures]) {
+//         UIViewController *Navigation = self.NearestViewController;
+//         if ([Navigation.childViewControllers[0] isKindOfClass:%c(THFHomeTimelineContainerViewController)] || [Navigation.childViewControllers[0] isKindOfClass:%c(T1HomeTimelineContainerViewController)]) {
+//             [self setValue:[NSNumber numberWithInteger:1] forKey:@"_startingIndex"];
+//             return 1;
+//         }
+//     }
+//     return %orig;
+// }
 
-%new - (UIViewController *)NearestViewController {
-    UIResponder *responder = self;
-    while ([responder isKindOfClass:[UIView class]])
-        responder = [responder nextResponder];
-    return (UIViewController *)responder;
-}
-%end
+// %new - (UIViewController *)NearestViewController {
+//     UIResponder *responder = self;
+//     while ([responder isKindOfClass:[UIView class]])
+//         responder = [responder nextResponder];
+//     return (UIViewController *)responder;
+// }
+// %end
 
 // MARK: Clean tracking from copied links: https://github.com/BandarHL/BHTwitter/issues/75
 %ctor {
