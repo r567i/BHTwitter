@@ -1489,6 +1489,21 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
             }
         }
     }
+    if ([BHTManager testFeatures]) {
+        NSMutableArray *filteredSections = [NSMutableArray array];
+        for (id item in sections) {
+            if ([item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+                T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
+                if (!ShouldHideTweetForUser(tweetmodel.fromUser) ||
+                    !ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+                    [filteredSections addObject:item];
+                }
+            } else {
+                [filteredSections addObject:item];
+            }
+        }
+        sections = [filteredSections copy];
+    }
     %orig(sections);
 }
 

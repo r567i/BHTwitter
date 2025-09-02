@@ -112,6 +112,9 @@ static NSString *_lastCopiedURL;
 - (void)_tfn_insertItem:(id)item atIndexPath:(NSIndexPath *)indexPath;
 @end
 
+@interface T1URTViewController : TFNItemsDataViewController
+@end
+
 @interface T1TabView : UIView
 @property(readonly, nonatomic) UILabel *titleLabel;
 @property(readonly, nonatomic) long long panelID;
