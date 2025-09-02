@@ -253,7 +253,7 @@
 + (BOOL)trendingAsDefault {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"trending_as_default"];
 }
-+ (BOOL)latestToAsfault {
++ (BOOL)latestAsfault {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"latest_as_default"];
 }
 + (BOOL)stopHidingTabBar {
