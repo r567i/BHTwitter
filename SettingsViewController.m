@@ -221,6 +221,10 @@
 
         PSSpecifier *alwaysFollowingPage = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"ALWAYS_FOLLOWING_PAGE_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE"] key:@"always_following_page" defaultValue:false changeAction:nil];
         
+        PSSpecifier *trendingAsDefault = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRENDING_AS_DEFAULT_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRENDING_AS_DEFAULT_OPTION_DETAIL_TITLE"] key:@"trending_as_default" defaultValue:false changeAction:nil];
+        
+        PSSpecifier *latestAsDefault = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"LATEST_AS_DEFAULT_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"LATEST_AS_DEFAULT_OPTION_DETAIL_TITLE"] key:@"latest_as_default" defaultValue:false changeAction:nil];
+        
         PSSpecifier *font = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FONT_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FONT_OPTION_DETAIL_TITLE"] key:@"en_font" defaultValue:false changeAction:nil];
         
         PSSpecifier *regularFontsPicker = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"REQULAR_FONTS_PICKER_OPTION_TITLE"] detailTitle:[[NSUserDefaults standardUserDefaults] objectForKey:@"bhtwitter_font_1"] dynamicRule:@"en_font, ==, 0" action:@selector(showRegularFontPicker:)];
@@ -288,6 +292,8 @@
             forceFullFrame,
             showScrollIndicator,
             alwaysFollowingPage,
+            trendingAsDefault,
+            latestAsDefault,
             font,
             regularFontsPicker,
             boldFontsPicker,

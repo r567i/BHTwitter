@@ -55,6 +55,8 @@
 + (BOOL)forceTweetFullFrame;
 + (BOOL)stripTrackingParams;
 + (BOOL)alwaysFollowingPage;
++ (BOOL)trendingAsDefault;
++ (BOOL)latestAsDefault;
 + (BOOL)stopHidingTabBar;
 + (BOOL)changeBackground;
 + (bool)backgroundImage;

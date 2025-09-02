@@ -250,6 +250,12 @@
 + (BOOL)alwaysFollowingPage {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"always_following_page"];
 }
++ (BOOL)trendingAsDefault {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"trending_as_default"];
+}
++ (BOOL)latestToAsfault {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"latest_as_default"];
+}
 + (BOOL)stopHidingTabBar {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"no_tab_bar_hiding"];
 }
