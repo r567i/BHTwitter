@@ -296,9 +296,6 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
         if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
             ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
-            if ([BHTManager testFeatures]) {
-                return nil;
-            }
             [_orig setHidden:true];
         }
     }
