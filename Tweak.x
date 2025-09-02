@@ -1342,8 +1342,9 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
 
 -(NSInteger)initialSelectedIndex {
     NSInteger originalIndex = %orig;
-    if ([BHTManager alwaysFollowingPage] && 
-        [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")] &&
+    if ((([BHTManager alwaysFollowingPage] && [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) ||
+        ([BHTManager testFeatures] && [[self.parentViewController class] isEqual:NSClassFromString(@"T1TwitterSwift.URTChromeViewController")]) ||
+        ([BHTManager testFeatures] && [[self.parentViewController class] isEqual:NSClassFromString(@"T1SSearchContainerViewController")])) &&
         originalIndex == 0) {
         return 1;
     }
