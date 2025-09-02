@@ -319,10 +319,7 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         }
         
         if ([BHTManager HidePromoted] && [class_name isEqualToString:@"TwitterURT.URTTimelineEventSummaryViewModel"]) {
-            _TtC10TwitterURT32URTTimelineEventSummaryViewModel *trendModel = tweet;
-            if ([[trendModel.scribeItem allKeys] containsObject:@"promoted_id"]) {
-                [_orig setHidden:true];
-            }
+            [_orig setHidden:true];
         }
         if ([BHTManager HidePromoted] && [class_name isEqualToString:@"TwitterURT.URTTimelineTrendViewModel"]) {
             _TtC10TwitterURT25URTTimelineTrendViewModel *trendModel = tweet;
@@ -397,10 +394,7 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         }
         
         if ([BHTManager HidePromoted] && [class_name isEqualToString:@"TwitterURT.URTTimelineEventSummaryViewModel"]) {
-            _TtC10TwitterURT32URTTimelineEventSummaryViewModel *trendModel = tweet;
-            if ([[trendModel.scribeItem allKeys] containsObject:@"promoted_id"]) {
-                return 0;
-            }
+            return 0;
         }
         if ([BHTManager HidePromoted] && [class_name isEqualToString:@"TwitterURT.URTTimelineTrendViewModel"]) {
             _TtC10TwitterURT25URTTimelineTrendViewModel *trendModel = tweet;
@@ -1495,4 +1489,21 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     %orig(sections);
 }
 
+%end
+
+// MARK: hide ADS - New Implementation
+%hook TFNItemsDataViewAdapterRegistry
+- (id)dataViewAdapterForItem:(id)item {
+    if ([BHTManager HidePromoted]) {
+        //Old Ads
+        if ([item isKindOfClass:objc_getClass("T1URTTimelineStatusItemViewModel")] && ((T1URTTimelineStatusItemViewModel *)item).isPromoted) {
+            return nil;
+        }
+        //New Ads
+        if ([item isKindOfClass:objc_getClass("TwitterURT.URTTimelineGoogleNativeAdViewModel")]) {
+            return nil;
+        }
+    }
+    return %orig;
+}
 %end
