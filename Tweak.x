@@ -1507,14 +1507,22 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
             return nil;
         }
     }
-    if (([BHTManager testFeatures]) &&
-        [item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-        T1URTTimelineStatusItemViewModel *tweetmodel = item;
-        if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
-            ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
-            return nil;
-        }
-    }
+    // if (([BHTManager testFeatures]) &&
+    //     [item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+    //     T1URTTimelineStatusItemViewModel *tweetmodel = item;
+    //     if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
+    //         ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+    //         return nil;
+    //     }
+    // }
     return %orig;
+}
+%end
+
+%hook TFNItemsDataViewControllerBackingStore
+- (void)setSections:(NSArray *)sections {
+    if ([BHTManager testFeatures]) {
+        NSLog(@"sections: %@", sections);
+    }
 }
 %end
