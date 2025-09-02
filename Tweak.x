@@ -1351,7 +1351,7 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
 }
 
 - (void)setSelectedIndex:(NSInteger)originalIndex {
-    if ([BHTManager alwaysFollowingPage] && [BHTManager testFeatures] && 
+    if ([BHTManager alwaysFollowingPage] && 
         [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")] &&
         originalIndex == 0) {
         return %orig(1);;
@@ -1360,7 +1360,7 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
 }
 
 -(id)pagingViewController:(id)arg1 viewControllerAtIndexPath:(id)arg2 {
-    if ([BHTManager testFeatures] && [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) {
+    if ([[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) {
         NSInteger rowIndex = [arg2 row];
         if ([BHTManager alwaysFollowingPage]) {
             if (rowIndex == 0) {
@@ -1376,7 +1376,7 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
 // https://github.com/BandarHL/BHTwitter/commit/17e72a2d3c1ce40805e08eb0561305184200a490
 %hook TFNScrollingHorizontalLabelView
 - (NSUInteger)startingIndex {
-    if ([BHTManager alwaysFollowingPage]) {
+    if ([BHTManager alwaysFollowingPage] && [BHTManager testFeatures]) {
         UIViewController *Navigation = self.NearestViewController;
         if ([Navigation.childViewControllers[0] isKindOfClass:%c(THFHomeTimelineContainerViewController)] || [Navigation.childViewControllers[0] isKindOfClass:%c(T1HomeTimelineContainerViewController)]) {
             [self setValue:[NSNumber numberWithInteger:1] forKey:@"_startingIndex"];
