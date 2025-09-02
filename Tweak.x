@@ -290,7 +290,7 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
     }
 
     if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
-        ![self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"] &&
+        ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] || [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
         [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
         if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
@@ -369,7 +369,7 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
     }
 
     if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
-        ![self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"] &&
+        ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] || [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
         [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
         if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
@@ -1352,6 +1352,11 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         return 1;
     }
     return originalIndex;
+}
+
+- (void)setSelectedIndex:(NSInteger)newIndex {
+   NSInteger forcedIndex = (newIndex == 0) ? 1 : newIndex;  
+   %orig(forcedIndex);
 }
 
 -(id)pagingViewController:(id)arg1 viewControllerAtIndexPath:(id)arg2 {
