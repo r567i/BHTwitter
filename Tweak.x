@@ -1473,6 +1473,44 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     return NO;
 }
 
+static BOOL BHT_isInListDetailsContentViewController(UIViewController *viewController) {
+    if (!viewController) return NO;
+    UIViewController *currentVC = viewController;
+    while (currentVC) {
+        NSString *className = NSStringFromClass([currentVC class]);
+        if ([className isEqualToString:@"TwitterListsFeatureImplementation.ListDetailsContentViewController"]) {
+            return YES;
+        }
+        if (currentVC.parentViewController) {
+            currentVC = currentVC.parentViewController;
+        } else if (currentVC.navigationController) {
+            currentVC = currentVC.navigationController;
+        } else if (currentVC.presentingViewController) {
+            currentVC = currentVC.presentingViewController;
+        } else {
+            break;
+        }
+    }
+    return NO;
+}
+static NSArray *tweetFilter(NSArray *sections) {
+    NSMutableArray *result = [NSMutableArray array];
+    for (id item in sections) {
+        if ([item isKindOfClass:[NSArray class]]) {
+            [result addObjectsFromArray:tweetFilter((NSArray *)item)];
+        } else if ([item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+            T1URTTimelineStatusItemViewModel *tweetmodel = item;
+            if (!ShouldHideTweetForUser(tweetmodel.fromUser) ||
+                !ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+                [result addObject:item];
+            }
+        } else {
+            [result addObject:item];
+        }
+    }
+    return [result copy];
+}
+
 %hook T1URTViewController
 
 - (void)setSections:(NSArray *)sections {
@@ -1487,6 +1525,14 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
                 [filteredSections removeObjectAtIndex:1];
                 sections = [filteredSections copy];
             }
+        }
+    }
+    if ([BHTManager testFeatures]) {
+        BOOL inListDetailsContentViewController = BHT_isInListDetailsContentViewController((UIViewController *)self);
+        if (inListDetailsContentViewController) {
+            NSArray *flatItems = tweetFilter(sections);
+            NSArray *wrapped = @[ flatItems ];
+            sections = [wrapped copy];
         }
     }
     %orig(sections);
