@@ -1351,7 +1351,7 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
 }
 
 - (void)setSelectedIndex:(NSInteger)originalIndex {
-    if ([BHTManager alwaysFollowingPage] && 
+    if ([BHTManager alwaysFollowingPage] && [BHTManager testFeatures] && 
         [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")] &&
         originalIndex == 0) {
         return %orig(1);;
