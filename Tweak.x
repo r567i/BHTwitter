@@ -277,9 +277,62 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
 }
 %end
 
+static BOOL BHT_isInListDetailsContentViewController(UIViewController *viewController) {
+    if (!viewController) return NO;
+    UIViewController *currentVC = viewController;
+    while (currentVC) {
+        NSString *className = NSStringFromClass([currentVC class]);
+        if ([className isEqualToString:@"TwitterListsFeatureImplementation.ListDetailsContentViewController"]) {
+            return YES;
+        }
+        if (currentVC.parentViewController) {
+            currentVC = currentVC.parentViewController;
+        } else if (currentVC.navigationController) {
+            currentVC = currentVC.navigationController;
+        } else if (currentVC.presentingViewController) {
+            currentVC = currentVC.presentingViewController;
+        } else {
+            break;
+        }
+    }
+    return NO;
+}
+static NSArray *tweetFilter(NSArray *sections) {
+    NSMutableArray *result = [NSMutableArray array];
+    for (id item in sections) {
+        if ([item isKindOfClass:[NSArray class]]) {
+            [result addObjectsFromArray:tweetFilter((NSArray *)item)];
+        } else if ([item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+            T1URTTimelineStatusItemViewModel *tweetmodel = item;
+            if (!ShouldHideTweetForUser(tweetmodel.fromUser) ||
+                !ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+                [result addObject:item];
+            }
+        } else {
+            [result addObject:item];
+        }
+    }
+    return [result copy];
+}
+
 // MARK: hide ADs
 // credit goes to haoict https://github.com/haoict/twitter-no-ads
 %hook TFNItemsDataViewController
+- (void)setSections:(NSArray *)sections {
+    if ([BHTManager testFeatures]) {
+        NSLog(@"TFNItemsDataViewController");
+        BOOL inListDetailsContentViewController = BHT_isInListDetailsContentViewController((UIViewController *)self);
+        if (inListDetailsContentViewController) {
+            NSLog(@"TFNItemsDataViewController sections1: %@", sections);
+            NSArray *flatItems = tweetFilter(sections);
+            NSArray *wrapped = @[ flatItems ];
+            sections = [wrapped copy];
+            NSLog(@"TFNItemsDataViewController sections2: %@", sections);
+        }
+    }
+    %orig(sections);
+}
+
 - (id)tableViewCellForItem:(id)arg1 atIndexPath:(id)arg2 {
     UITableViewCell *_orig = %orig;
     id tweet = [self itemAtIndexPath:arg2];
@@ -1473,44 +1526,6 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     return NO;
 }
 
-static BOOL BHT_isInListDetailsContentViewController(UIViewController *viewController) {
-    if (!viewController) return NO;
-    UIViewController *currentVC = viewController;
-    while (currentVC) {
-        NSString *className = NSStringFromClass([currentVC class]);
-        if ([className isEqualToString:@"TwitterListsFeatureImplementation.ListDetailsContentViewController"]) {
-            return YES;
-        }
-        if (currentVC.parentViewController) {
-            currentVC = currentVC.parentViewController;
-        } else if (currentVC.navigationController) {
-            currentVC = currentVC.navigationController;
-        } else if (currentVC.presentingViewController) {
-            currentVC = currentVC.presentingViewController;
-        } else {
-            break;
-        }
-    }
-    return NO;
-}
-static NSArray *tweetFilter(NSArray *sections) {
-    NSMutableArray *result = [NSMutableArray array];
-    for (id item in sections) {
-        if ([item isKindOfClass:[NSArray class]]) {
-            [result addObjectsFromArray:tweetFilter((NSArray *)item)];
-        } else if ([item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-            T1URTTimelineStatusItemViewModel *tweetmodel = item;
-            if (!ShouldHideTweetForUser(tweetmodel.fromUser) ||
-                !ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
-                [result addObject:item];
-            }
-        } else {
-            [result addObject:item];
-        }
-    }
-    return [result copy];
-}
-
 %hook T1URTViewController
 
 - (void)setSections:(NSArray *)sections {
@@ -1525,16 +1540,6 @@ static NSArray *tweetFilter(NSArray *sections) {
                 [filteredSections removeObjectAtIndex:1];
                 sections = [filteredSections copy];
             }
-        }
-    }
-    if ([BHTManager testFeatures]) {
-        NSLog(@"testFeatures");
-        BOOL inListDetailsContentViewController = BHT_isInListDetailsContentViewController((UIViewController *)self);
-        if (inListDetailsContentViewController) {
-            NSLog(@"sections: %@", sections);
-            NSArray *flatItems = tweetFilter(sections);
-            NSArray *wrapped = @[ flatItems ];
-            sections = [wrapped copy];
         }
     }
     %orig(sections);
