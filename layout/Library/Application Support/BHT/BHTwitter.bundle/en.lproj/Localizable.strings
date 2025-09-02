@@ -44,6 +44,9 @@
 "HIDE_TOPICS_OPTION_TITLE" = "Hide topics tweets";
 "HIDE_TOPICS_OPTION_DETAIL_TITLE" = "Remove all topics tweets from the timeline.";
 
+"HIDE_DISCOVER_MORE_OPTION_TITLE" = "Hide Discover More";
+"HIDE_DISCOVER_MORE_OPTION_DETAIL_TITLE" = "Remove Discover More in tweet detail.";
+
 "HIDE_BLOCKED_ACCOUNT_TWEETS_OPTION_TITLE" = "Hide Blocked account tweets";
 "HIDE_BLOCKED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE" = "Remove all Blocked account tweets in Twitter.";
 

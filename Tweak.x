@@ -879,10 +879,6 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         return true;
     }
 
-    if ([key isEqualToString:@"home_timeline_start_at_top_latest_enabled"] || [key isEqualToString:@"conversational_replies_ios_pinned_replies_creation_enabled"]) {
-        return true;
-    }
-
     if ([key isEqualToString:@"explore_relaunch_enable_immersive_player_across_twitter"]) {
         return false;
     }
@@ -1337,6 +1333,8 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
 }
 %end
 
+// MARK: Always Following Page
+// https://github.com/cbjn/XNotForMe/blob/main/Tweak.x
 %hook TFNScrollingSegmentedViewController
 -(NSInteger)selectedIndex {
     NSInteger originalIndex = %orig;
@@ -1427,3 +1425,54 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
     %init;
 }
 
+// MARK: Remove "Discover More" section
+// Helper function to check if we're in the T1ConversationContainerViewController hierarchy
+// https://github.com/NeoFreeBird/tweak @nyathea
+static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewController) {
+    if (!viewController) return NO;
+    
+    // Check all view controllers up the hierarchy
+    UIViewController *currentVC = viewController;
+    while (currentVC) {
+        NSString *className = NSStringFromClass([currentVC class]);
+        
+        // Check for T1ConversationContainerViewController
+        if ([className isEqualToString:@"T1ConversationContainerViewController"]) {
+            return YES;
+        }
+        
+        // Move up the hierarchy
+        if (currentVC.parentViewController) {
+            currentVC = currentVC.parentViewController;
+        } else if (currentVC.navigationController) {
+            currentVC = currentVC.navigationController;
+        } else if (currentVC.presentingViewController) {
+            currentVC = currentVC.presentingViewController;
+        } else {
+            break;
+        }
+    }
+    
+    return NO;
+}
+
+%hook T1URTViewController
+
+- (void)setSections:(NSArray *)sections {
+    
+    // Only filter if we're in the T1ConversationContainerViewController hierarchy
+    BOOL inConversationHierarchy = BHT_isInConversationContainerHierarchy((UIViewController *)self);
+    
+    if (inConversationHierarchy) {
+        // Remove entry 1 (index 1) from sections array
+        if (sections.count > 1) {
+            NSMutableArray *filteredSections = [NSMutableArray arrayWithArray:sections];
+            [filteredSections removeObjectAtIndex:1];
+            sections = [filteredSections copy];
+        }
+    }
+    
+    %orig(sections);
+}
+
+%end

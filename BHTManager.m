@@ -169,6 +169,9 @@
 + (BOOL)HideTopics {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_topics"];
 }
++ (BOOL)hideDiscoverMore {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_discover_more"];
+}
 + (BOOL)hideBlockedAccountTweets {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_blocked_account_tweets"];
 }

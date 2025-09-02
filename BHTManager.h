@@ -31,6 +31,7 @@
 + (BOOL)FollowConfirm;
 + (BOOL)HidePromoted;
 + (BOOL)HideTopics;
++ (BOOL)hideDiscoverMore;
 + (BOOL)hideBlockedAccountTweets;
 + (BOOL)hideMutedAccountTweets;
 + (BOOL)DisableVODCaptions;
