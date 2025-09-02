@@ -1340,13 +1340,6 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
 %hook TFNScrollingSegmentedViewController
 -(NSInteger)selectedIndex {
     NSInteger originalIndex = %orig;
-    if ([BHTManager alwaysFollowingPage] && originalIndex == 0) {
-        return 1;
-    }
-    return originalIndex;
-}
--(NSInteger)selectedIndex {
-    NSInteger originalIndex = %orig;
     if ([BHTManager alwaysFollowingPage] &&
         [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")] &&
         originalIndex == 0) {
