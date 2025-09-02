@@ -1472,6 +1472,21 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     
     return NO;
 }
+static NSArray *tweetFilter(NSArray *sections) {
+    NSMutableArray *result = [NSMutableArray array];
+    for (id item in sections) {
+        if ([item isKindOfClass:[NSArray class]]) {
+            [result addObjectsFromArray:tweetFilter((NSArray *)item)];
+        } else if ([item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+            T1URTTimelineStatusItemViewModel *tweetmodel = item;
+            if (!ShouldHideTweetForUser(tweetmodel.fromUser) ||
+                !ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+                [result addObject:item];
+            }
+        }
+    }
+    return [result copy];
+}
 
 %hook T1URTViewController
 
@@ -1490,17 +1505,9 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
         }
     }
     if ([BHTManager testFeatures]) {
-        NSMutableArray *filteredSections = [NSMutableArray array];
-        for (id item in sections) {
-            if ([item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-                T1URTTimelineStatusItemViewModel *tweetmodel = item;
-                if (!ShouldHideTweetForUser(tweetmodel.fromUser) ||
-                    !ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
-                    [filteredSections addObject:item];
-                }
-            }
-        }
-        sections = [filteredSections copy];
+        NSArray *flatItems = tweetFilter(sections);
+        NSArray *wrapped = @[ flatItems ];
+        sections = [wrapped copy];
     }
     %orig(sections);
 }
