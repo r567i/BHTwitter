@@ -1459,19 +1459,19 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %hook T1URTViewController
 
 - (void)setSections:(NSArray *)sections {
-    
-    // Only filter if we're in the T1ConversationContainerViewController hierarchy
-    BOOL inConversationHierarchy = BHT_isInConversationContainerHierarchy((UIViewController *)self);
-    
-    if (inConversationHierarchy) {
-        // Remove entry 1 (index 1) from sections array
-        if (sections.count > 1) {
-            NSMutableArray *filteredSections = [NSMutableArray arrayWithArray:sections];
-            [filteredSections removeObjectAtIndex:1];
-            sections = [filteredSections copy];
+    if ([BHTManager hideDiscoverMore]) {
+        // Only filter if we're in the T1ConversationContainerViewController hierarchy
+        BOOL inConversationHierarchy = BHT_isInConversationContainerHierarchy((UIViewController *)self);
+        
+        if (inConversationHierarchy) {
+            // Remove entry 1 (index 1) from sections array
+            if (sections.count > 1) {
+                NSMutableArray *filteredSections = [NSMutableArray arrayWithArray:sections];
+                [filteredSections removeObjectAtIndex:1];
+                sections = [filteredSections copy];
+            }
         }
     }
-    
     %orig(sections);
 }
 
