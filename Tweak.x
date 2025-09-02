@@ -289,16 +289,19 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         [_orig setHidden:YES];
     }
 
-    // if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
-    //     ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
-    //     [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
-    //     [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-    //     T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
-    //     if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
-    //         ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
-    //         [_orig setHidden:true];
-    //     }
-    // }
+    if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
+        ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
+        [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
+        [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+        T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
+        if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
+            ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+            if ([BHTManager testFeatures]) {
+                return nil;
+            }
+            [_orig setHidden:true];
+        }
+    }
 
     if ([self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"]) {
         if ([BHTManager hideWhoToFollow]) {
@@ -366,16 +369,16 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         return 0;
     }
 
-    // if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
-    //     ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
-    //     [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
-    //     [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-    //     T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
-    //     if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
-    //         ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
-    //         return 0;
-    //     }
-    // }
+    if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
+        ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
+        [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
+        [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+        T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
+        if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
+            ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+            return 0;
+        }
+    }
     
     if ([self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"]) {
         if ([BHTManager hideWhoToFollow]) {
@@ -1472,21 +1475,6 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     
     return NO;
 }
-static NSArray *tweetFilter(NSArray *sections) {
-    NSMutableArray *result = [NSMutableArray array];
-    for (id item in sections) {
-        if ([item isKindOfClass:[NSArray class]]) {
-            [result addObjectsFromArray:tweetFilter((NSArray *)item)];
-        } else if ([item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-            T1URTTimelineStatusItemViewModel *tweetmodel = item;
-            if (!ShouldHideTweetForUser(tweetmodel.fromUser) ||
-                !ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
-                [result addObject:item];
-            }
-        }
-    }
-    return [result copy];
-}
 
 %hook T1URTViewController
 
@@ -1503,11 +1491,6 @@ static NSArray *tweetFilter(NSArray *sections) {
                 sections = [filteredSections copy];
             }
         }
-    }
-    if ([BHTManager testFeatures]) {
-        NSArray *flatItems = tweetFilter(sections);
-        NSArray *wrapped = @[ flatItems ];
-        sections = [wrapped copy];
     }
     %orig(sections);
 }
