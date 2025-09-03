@@ -33,6 +33,7 @@
 + (BOOL)HideTopics;
 + (BOOL)hideDiscoverMore;
 + (BOOL)hideBlockedAccountTweets;
++ (BOOL)onlyInLists;
 + (BOOL)hideMutedAccountTweets;
 + (BOOL)DisableVODCaptions;
 + (BOOL)Padlock;

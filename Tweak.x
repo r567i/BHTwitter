@@ -43,7 +43,7 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     if (![BHTManager hideBlockedAccountTweets] && ![BHTManager hideMutedAccountTweets]) {
         return NO;
     }
-    if ([BHTManager testFeatures]) {
+    if ([BHTManager onlyInLists]) {
         if (![model.scribeComponent isEqualToString:@"suggest_organic_list_tweet"]) {
             return NO;
         }

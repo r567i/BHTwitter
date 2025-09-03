@@ -178,6 +178,9 @@
 + (BOOL)hideMutedAccountTweets {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_muted_account_tweets"];
 }
++ (BOOL)onlyInLists {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"only_in_lists"];
+}
 + (BOOL)DisableVODCaptions {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"dis_VODCaptions"];
 }

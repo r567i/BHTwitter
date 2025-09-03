@@ -53,6 +53,9 @@
 "HIDE_MUTED_ACCOUNT_TWEETS_OPTION_TITLE" = "Hide Muted account tweets";
 "HIDE_MUTED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE" = "Remove all Muted account tweets in Twitter.";
 
+"ONLY_IN_LISTS_OPTION_TITLE" = "Hide tweets only in Lists";
+"ONLY_IN_LISTS_OPTION_DETAIL_TITLE" = "Remove Blocked/Muted tweets only in Lists view";
+
 "HIDE_WHO_FOLLOW_OPTION" = "Hide Who to follow section";
 "HIDE_WHO_FOLLOW_OPTION_DETAIL_TITLE" = "Hide Who to follow section in Profiles";
 

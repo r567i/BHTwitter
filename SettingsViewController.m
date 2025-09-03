@@ -155,6 +155,8 @@
         
         PSSpecifier *hideMutedAccountTweets = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_MUTED_ACCOUNT_TWEETS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_MUTED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE"] key:@"hide_muted_account_tweets" defaultValue:false changeAction:nil];
         
+        PSSpecifier *onlyInLists = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"ONLY_IN_LISTS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"ONLY_IN_LISTS_OPTION_DETAIL_TITLE"] key:@"only_in_lists" defaultValue:false changeAction:nil];
+        
         PSSpecifier *hideWhoToFollow = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_WHO_FOLLOW_OPTION"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_WHO_FOLLOW_OPTION_DETAIL_TITLE"] key:@"hide_who_to_follow" defaultValue:false changeAction:nil];
         
         PSSpecifier *hideTopicsToFollow = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_TO_FOLLOW_OPTION"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_TO_FOLLOW_OPTION_DETAIL_TITLE"] key:@"hide_topics_to_follow" defaultValue:false changeAction:nil];
@@ -255,6 +257,7 @@
             hideDiscoverMore,
             hideBlockedAccountTweets,
             hideMutedAccountTweets,
+            onlyInLists,
             hideWhoToFollow,
             hideTopicsToFollow,
             hidePremiumOffer,
