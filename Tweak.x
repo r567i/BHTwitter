@@ -1483,7 +1483,6 @@ static void DumpObjectInfo(id obj) {
 
     Class cls = [obj class];
     NSLog(@"📦 Class: %@", NSStringFromClass(cls));
-    return;
 
     unsigned int ivarCount = 0;
     Ivar *ivars = class_copyIvarList(cls, &ivarCount);
@@ -1518,7 +1517,6 @@ static void DumpObjectInfo(id obj) {
 // MARK: hide ADS - New Implementation
 %hook TFNItemsDataViewAdapterRegistry
 - (id)dataViewAdapterForItem:(id)item {
-    DumpObjectInfo(item);
     if ([BHTManager HidePromoted]) {
         //Old Ads
         if ([item isKindOfClass:objc_getClass("T1URTTimelineStatusItemViewModel")] && ((T1URTTimelineStatusItemViewModel *)item).isPromoted) {
@@ -1535,6 +1533,7 @@ static void DumpObjectInfo(id obj) {
 
     if (([BHTManager testFeatures]) &&
         [item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+        DumpObjectInfo(item);
         if (ShouldHideTweetForUser(item)) {
             return nil;
         }
