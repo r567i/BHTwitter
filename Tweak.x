@@ -1483,6 +1483,7 @@ static void DumpObjectInfo(id obj) {
 
     Class cls = [obj class];
     NSLog(@"📦 Class: %@", NSStringFromClass(cls));
+    return;
 
     unsigned int ivarCount = 0;
     Ivar *ivars = class_copyIvarList(cls, &ivarCount);
@@ -1527,6 +1528,9 @@ static void DumpObjectInfo(id obj) {
         if ([item isKindOfClass:objc_getClass("TwitterURT.URTTimelineGoogleNativeAdViewModel")]) {
             return nil;
         }
+    }
+    if ([BHTManager alwaysFollowingPage] && [item isKindOfClass:objc_getClass("THFHomeShimmerItem")]) {
+        return nil;
     }
 
     if (([BHTManager testFeatures]) &&
