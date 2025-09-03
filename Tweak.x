@@ -39,18 +39,25 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     }
 }
 
-static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
-    if (!user || ![user respondsToSelector:@selector(relationship)]) {
+static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
+    if (![BHTManager hideBlockedAccountTweets] && ![BHTManager hideMutedAccountTweets]) {
         return NO;
     }
-    TFSTwitterRelationship *relationship = user.relationship;
-    if (!relationship) return NO;
-    
-    NSInteger muted = relationship.mutedByCurrentAccountState;
-    NSInteger blocked = relationship.blockedByCurrentAccountState;
-    
-    return (([BHTManager hideBlockedAccountTweets] && blocked == 1) ||
-            ([BHTManager hideMutedAccountTweets] && muted == 1));
+    NSArray<TFNTwitterUser *> *users = @[model.fromUser, model.representedFromUser];
+    for (TFNTwitterUser *user in users) {
+        if (!user || ![user respondsToSelector:@selector(relationship)]) {
+            continue;
+        }
+        TFSTwitterRelationship *relationship = user.relationship;
+        if (!relationship) continue;
+        NSInteger muted = relationship.mutedByCurrentAccountState;
+        NSInteger blocked = relationship.blockedByCurrentAccountState;
+        if (([BHTManager hideBlockedAccountTweets] && blocked == 1) ||
+            ([BHTManager hideMutedAccountTweets] && muted == 1)) {
+            return YES;
+        }
+    }
+    return NO;
 }
 
 // MARK: Clean cache and Padlock
@@ -289,13 +296,10 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         [_orig setHidden:YES];
     }
 
-    if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
-        ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
+    if (([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
         [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
         [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-        T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
-        if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
-            ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+        if (ShouldHideTweetForUser(tweet)) {
             [_orig setHidden:true];
         }
     }
@@ -366,13 +370,10 @@ static BOOL ShouldHideTweetForUser(TFNTwitterUser *user) {
         return 0;
     }
 
-    if (([BHTManager hideBlockedAccountTweets] || [BHTManager hideMutedAccountTweets]) &&
-        ([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
+    if (([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
         [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
         [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-        T1URTTimelineStatusItemViewModel *tweetmodel = tweet;
-        if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
-            ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+        if (ShouldHideTweetForUser(tweet)) {
             return 0;
         }
     }
@@ -1473,9 +1474,50 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 
 %end
 
+
+static void DumpObjectInfo(id obj) {
+    if (!obj) {
+        NSLog(@"[DumpObjectInfo] Object is nil");
+        return;
+    }
+
+    Class cls = [obj class];
+    NSLog(@"📦 Class: %@", NSStringFromClass(cls));
+
+    unsigned int ivarCount = 0;
+    Ivar *ivars = class_copyIvarList(cls, &ivarCount);
+    NSLog(@"🔍 Ivars:");
+    for (unsigned int i = 0; i < ivarCount; i++) {
+        Ivar ivar = ivars[i];
+        const char *name = ivar_getName(ivar);
+        id value = object_getIvar(obj, ivar);
+        NSLog(@"  %s = %@", name, value);
+    }
+    free(ivars);
+
+    unsigned int propCount = 0;
+    objc_property_t *props = class_copyPropertyList(cls, &propCount);
+    NSLog(@"🏷️ Properties:");
+    for (unsigned int i = 0; i < propCount; i++) {
+        const char *name = property_getName(props[i]);
+        NSLog(@"  %s", name);
+    }
+    free(props);
+
+    unsigned int methodCount = 0;
+    Method *methods = class_copyMethodList(cls, &methodCount);
+    NSLog(@"🔧 Methods:");
+    for (unsigned int i = 0; i < methodCount; i++) {
+        SEL sel = method_getName(methods[i]);
+        NSLog(@"  %@", NSStringFromSelector(sel));
+    }
+    free(methods);
+}
+
 // MARK: hide ADS - New Implementation
 %hook TFNItemsDataViewAdapterRegistry
 - (id)dataViewAdapterForItem:(id)item {
+    DumpObjectInfo(item);
     if ([BHTManager HidePromoted]) {
         //Old Ads
         if ([item isKindOfClass:objc_getClass("T1URTTimelineStatusItemViewModel")] && ((T1URTTimelineStatusItemViewModel *)item).isPromoted) {
@@ -1486,11 +1528,10 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
             return nil;
         }
     }
+
     if (([BHTManager testFeatures]) &&
         [item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
-        T1URTTimelineStatusItemViewModel *tweetmodel = item;
-        if (ShouldHideTweetForUser(tweetmodel.fromUser) ||
-            ShouldHideTweetForUser(tweetmodel.representedFromUser)) {
+        if (ShouldHideTweetForUser(item)) {
             return nil;
         }
     }
