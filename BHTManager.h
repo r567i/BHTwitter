@@ -64,5 +64,7 @@
 + (BOOL)hideBookmarkButton;
 + (BOOL)customVoice;
 + (BOOL)testFeatures;
++ (BOOL)changeTranslateLang;
++ (NSString *)translateLang;
 @end
 

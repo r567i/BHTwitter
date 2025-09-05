@@ -277,6 +277,18 @@
 + (BOOL)testFeatures {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"test_features"];
 }
++ (BOOL)changeTranslateLang {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"change_translate_lang"];
+}
++ (NSString *)translateLang {
+    NSString *translateLang = [[NSUserDefaults standardUserDefaults] stringForKey:@"translate_lang"];
+    if (translateLang == nil || [translateLang isEqualToString:@""]) {
+        NSString *defaultLangCode = [[NSLocale preferredLanguages] firstObject];
+        NSString *languageCode = [[NSLocale componentsFromLocaleIdentifier:defaultLangCode] objectForKey:NSLocaleLanguageCode];
+        return languageCode ?: @"en";
+    }
+    return translateLang;
+}
 + (UIViewController *)BHTSettingsWithAccount:(TFNTwitterAccount *)twAccount {
     SettingsViewController *pref = [[SettingsViewController alloc] initWithTwitterAccount:twAccount];
     [pref.navigationItem setTitleView:[objc_getClass("TFNTitleView") titleViewWithTitle:@"BHTwitter" subtitle:twAccount.displayUsername]];

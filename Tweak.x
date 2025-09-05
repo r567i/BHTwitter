@@ -1479,7 +1479,7 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 
 %end
 
-// MARK: hide ADS - New Implementation
+// MARK: hide ADS - New Implementation & ide tweets
 %hook TFNItemsDataViewAdapterRegistry
 - (id)dataViewAdapterForItem:(id)item {
     if ([BHTManager HidePromoted]) {
@@ -1503,5 +1503,17 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
         }
     }
     return %orig;
+}
+%end
+
+%hook NSMutableURLRequest
+- (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field {
+    if (([field isEqualToString:@"X-Twitter-Client-Language"] || [field isEqualToString:@"Accept-Language"]) &&
+        self.URL && [self.URL.absoluteString containsString:@"TranslateTweetResults"]) {
+        NSString *lang = [BHTManager translateLang];
+        %orig(lang, field);
+        return;
+    }    
+    %orig(value, field);
 }
 %end

@@ -197,6 +197,10 @@
 
         PSSpecifier *urlHost = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"SELECT_URL_HOST_AFTER_COPY_OPTION_TITLE"] detailTitle:[[NSUserDefaults standardUserDefaults] objectForKey:@"tweet_url_host"] dynamicRule:@"strip_tracking_params, ==, 0" action:@selector(showURLHostSelectionViewController:)];
 
+        PSSpecifier *changeTranslateLang = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"CHANGE_TRANSLATE_LANG_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"CHANGE_TRANSLATE_LANG_OPTION_DETAIL_TITLE"] key:@"change_translate_lang" defaultValue:false changeAction:nil];
+
+        PSSpecifier *translateLang = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRANSLATE_LANG_OPTION_TITLE"] detailTitle:[[NSUserDefaults standardUserDefaults] objectForKey:@"translate_lang"] ?: @"Default App Lang" dynamicRule:@"change_translate_lang, ==, 0" action:@selector(showTranslateLangSelect:)];
+
         // Twitter bule section
         PSSpecifier *undoTweet = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"UNDO_TWEET_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"UNDO_TWEET_OPTION_DETAIL_TITLE"] key:@"undo_tweet" defaultValue:false changeAction:nil];
         
@@ -279,6 +283,8 @@
             alwaysOpenSafari,
             stripTrackingParams,
             urlHost,
+            changeTranslateLang,
+            translateLang
             
             twitterBlueSection, // 1
             undoTweet,
@@ -567,6 +573,68 @@
     [alert addAction:cancel];
     
     [self presentViewController:alert animated:true completion:nil];
+}
+- (void)showTranslateLangSelect:(PSSpecifier *)specifier {
+    NSString *currentValue = [[NSUserDefaults standardUserDefaults] stringForKey:@"translate_lang"];
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRANSLATE_LANG_OPTION_TITLE"]
+                                                                   message:@"Select the language for translation"
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    NSDictionary *languages = @{
+        @"ar": @"Arabic",
+        @"zh": @"Chinese",
+        @"cs": @"Czech",
+        @"da": @"Danish",
+        @"nl": @"Dutch",
+        @"en": @"English",
+        @"fi": @"Finnish",
+        @"fr": @"French",
+        @"de": @"German",
+        @"el": @"Greek",
+        @"he": @"Hebrew",
+        @"hi": @"Hindi",
+        @"hu": @"Hungarian",
+        @"id": @"Indonesian",
+        @"it": @"Italian",
+        @"ja": @"Japanese",
+        @"ko": @"Korean",
+        @"ms": @"Malay",
+        @"nb": @"Norwegian",
+        @"pl": @"Polish",
+        @"pt": @"Portuguese",
+        @"ro": @"Romanian",
+        @"ru": @"Russian",
+        @"sk": @"Slovak",
+        @"es": @"Spanish",
+        @"sv": @"Swedish",
+        @"th": @"Thai",
+        @"tr": @"Turkish",
+        @"uk": @"Ukrainian",
+        @"vi": @"Vietnamese"
+    };
+    for (NSString *code in languages) {
+        NSString *langName = [languages objectForKey:code];
+        NSString *title = [NSString stringWithFormat:@"%@ - %@", code, langName];
+        if ([code isEqualToString:currentValue]) {
+            title = [NSString stringWithFormat:@"✓ %@", title];
+        }
+        [alert addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [[NSUserDefaults standardUserDefaults] setObject:code forKey:@"translate_lang"];
+            [specifier setProperty:[NSString stringWithFormat:@"%@ - %@", code, langName] forKey:@"subtitle"];
+            [self reloadSpecifiers];
+        }]];
+    }
+    [alert addAction:[UIAlertAction actionWithTitle:@"Default App Lang"
+                                              style:UIAlertActionStyleDestructive
+                                            handler:^(UIAlertAction * _Nonnull action) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"translate_lang"];
+        [specifier setProperty:@"Default App Lang" forKey:@"subtitle"];
+        [self reloadSpecifiers];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"CANCEL_BUTTON_TITLE"]
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 - (void)showCustomBackgroundViewViewController:(PSSpecifier *)specifier {
     UITableViewCell *specifierCell = [specifier propertyForKey:PSTableCellKey];
