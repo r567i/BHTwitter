@@ -1512,7 +1512,8 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %hook NSMutableURLRequest
 - (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field {
     if ([BHTManager changeTranslateLang] && self.URL &&
-        ([self.URL.absoluteString containsString:@"TranslateTweetResults"] || [self.URL.absoluteString containsString:@"ConversationTimeline"]) &&
+        ([self.URL.absoluteString containsString:@"TranslateTweetResults"] ||
+        ([self.URL.absoluteString containsString:@"ConversationTimeline"] && ![BHTManager forceTranslatable])) &&
         ([field isEqualToString:@"X-Twitter-Client-Language"] || [field isEqualToString:@"Accept-Language"])) {
         NSString *lang = [BHTManager translateLang];
         %orig(lang, field);
