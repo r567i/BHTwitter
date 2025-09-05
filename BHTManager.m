@@ -277,9 +277,6 @@
 + (BOOL)testFeatures {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"test_features"];
 }
-+ (BOOL)changeTranslateLang {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:@"change_translate_lang"];
-}
 + (NSString *)translateLang {
     NSString *translateLang = [[NSUserDefaults standardUserDefaults] stringForKey:@"translate_lang"];
     if (translateLang == nil || [translateLang isEqualToString:@""]) {

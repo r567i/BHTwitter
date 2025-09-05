@@ -197,9 +197,7 @@
 
         PSSpecifier *urlHost = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"SELECT_URL_HOST_AFTER_COPY_OPTION_TITLE"] detailTitle:[[NSUserDefaults standardUserDefaults] objectForKey:@"tweet_url_host"] dynamicRule:@"strip_tracking_params, ==, 0" action:@selector(showURLHostSelectionViewController:)];
 
-        PSSpecifier *changeTranslateLang = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"CHANGE_TRANSLATE_LANG_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"CHANGE_TRANSLATE_LANG_OPTION_DETAIL_TITLE"] key:@"change_translate_lang" defaultValue:false changeAction:nil];
-
-        PSSpecifier *translateLang = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRANSLATE_LANG_OPTION_TITLE"] detailTitle:[[NSUserDefaults standardUserDefaults] objectForKey:@"translate_lang"] ?: @"Default App Lang" dynamicRule:@"change_translate_lang, ==, 0" action:@selector(showTranslateLangSelect:)];
+        PSSpecifier *translateLang = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRANSLATE_LANG_OPTION_TITLE"] detailTitle:[[NSUserDefaults standardUserDefaults] objectForKey:@"translate_lang"] ?: @"Default App Lang" action:@selector(showTranslateLangSelect:)];
 
         // Twitter bule section
         PSSpecifier *undoTweet = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"UNDO_TWEET_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"UNDO_TWEET_OPTION_DETAIL_TITLE"] key:@"undo_tweet" defaultValue:false changeAction:nil];
@@ -283,7 +281,6 @@
             alwaysOpenSafari,
             stripTrackingParams,
             urlHost,
-            changeTranslateLang,
             translateLang,
             
             twitterBlueSection, // 1
