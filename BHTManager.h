@@ -66,5 +66,6 @@
 + (BOOL)testFeatures;
 + (BOOL)changeTranslateLang;
 + (NSString *)translateLang;
++ (BOOL)forceTranslatable;
 @end
 

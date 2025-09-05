@@ -125,6 +125,8 @@
 
 "TRANSLATE_LANG_OPTION_TITLE" = "Select Language for Translation";
 
+"FORCE_TRANSLATABLE_OPTION_TITLE" = "Force Translatable";
+
 "TWITTER_BLUE_SECTION_HEADER_TITLE" = "Twitter blue features";
 "UNDO_TWEET_OPTION_TITLE" = "Undo tweets feature";
 "UNDO_TWEET_OPTION_DETAIL_TITLE" = "Undo tweets after tweeting.";

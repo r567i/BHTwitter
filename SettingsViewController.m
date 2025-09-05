@@ -201,6 +201,8 @@
 
         PSSpecifier *translateLang = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRANSLATE_LANG_OPTION_TITLE"] detailTitle:[[NSUserDefaults standardUserDefaults] objectForKey:@"translate_lang"] ?: @"Default App Lang" dynamicRule:@"change_translate_lang, ==, 0" action:@selector(showTranslateLangSelect:)];
 
+        PSSpecifier *forceTranslatable = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FORCE_TRANSLATABLE_OPTION_TITLE"] detailTitle:nil key:@"force_translatable" defaultValue:false changeAction:nil];
+
         // Twitter bule section
         PSSpecifier *undoTweet = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"UNDO_TWEET_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"UNDO_TWEET_OPTION_DETAIL_TITLE"] key:@"undo_tweet" defaultValue:false changeAction:nil];
         
@@ -283,6 +285,7 @@
             alwaysOpenSafari,
             stripTrackingParams,
             urlHost,
+            forceTranslatable,
             changeTranslateLang,
             translateLang,
             

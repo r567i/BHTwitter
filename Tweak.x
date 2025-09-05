@@ -458,7 +458,7 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     return ([BHTManager HidePromoted] && [self isPromoted]) ? true : %orig;
 }
 - (BOOL)isTranslatable {
-    return [BHTManager testFeatures] ? true : %orig;
+    return [BHTManager forceTranslatable] ? true : %orig;
 }
 %end
 
@@ -1524,6 +1524,6 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 
 %hook T1URTTimelineStatusItemViewModel
 - (BOOL)isTranslatable {
-    return [BHTManager testFeatures] ? true : %orig;
+    return [BHTManager forceTranslatable] ? true : %orig;
 }
 %end

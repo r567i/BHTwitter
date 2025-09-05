@@ -284,6 +284,9 @@
     NSString *translateLang = [[NSUserDefaults standardUserDefaults] stringForKey:@"translate_lang"];
     return translateLang;
 }
++ (BOOL)forceTranslatable {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"force_translatable"];
+}
 + (UIViewController *)BHTSettingsWithAccount:(TFNTwitterAccount *)twAccount {
     SettingsViewController *pref = [[SettingsViewController alloc] initWithTwitterAccount:twAccount];
     [pref.navigationItem setTitleView:[objc_getClass("TFNTitleView") titleViewWithTitle:@"BHTwitter" subtitle:twAccount.displayUsername]];
