@@ -457,6 +457,9 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
 - (_Bool)isCardHidden {
     return ([BHTManager HidePromoted] && [self isPromoted]) ? true : %orig;
 }
+- (BOOL)isTranslatable {
+    return [BHTManager testFeatures] ? true : %orig;
+}
 %end
 
 // MARK: DM download
@@ -1516,5 +1519,11 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
         return;
     }    
     %orig(value, field);
+}
+%end
+
+%hook T1URTTimelineStatusItemViewModel
+- (BOOL)isTranslatable {
+    return [BHTManager testFeatures] ? true : %orig;
 }
 %end
