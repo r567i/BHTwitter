@@ -1508,18 +1508,11 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 
 %hook NSMutableURLRequest
 - (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field {
-    if (([field isEqualToString:@"X-Twitter-Client-Language"] || [field isEqualToString:@"Accept-Language"]) &&
-        self.URL && [self.URL.absoluteString containsString:@"TranslateTweetResults"]) {
+    if (([field isEqualToString:@"X-Twitter-Client-Language"] || [field isEqualToString:@"Accept-Language"])) {
         NSString *lang = [BHTManager translateLang];
         %orig(lang, field);
         return;
     }    
     %orig(value, field);
-}
-%end
-
-%hook T1GraphQLFeatures
-- (BOOL)isUrtConversationTimelineEnabled {
-   return false;
 }
 %end
