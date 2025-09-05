@@ -284,7 +284,7 @@
             stripTrackingParams,
             urlHost,
             changeTranslateLang,
-            translateLang
+            translateLang,
             
             twitterBlueSection, // 1
             undoTweet,

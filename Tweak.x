@@ -1517,3 +1517,9 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     %orig(value, field);
 }
 %end
+
+%hook T1GraphQLFeatures
+- (BOOL)isUrtConversationTimelineEnabled {
+   return false;
+}
+%end
