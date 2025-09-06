@@ -890,8 +890,8 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
         return false;
     }
 
-    if ([BHTManager testFeatures] &&
-    ([key containsString:@"subscription"] || [key containsString:@"monetiz"] || [key isEqualToString:@"ads_promote_mode_enable"])) {
+    if ([BHTManager hidePremiumOffer] &&
+    ([key containsString:@"subscription"] || [key containsString:@"monetiz"])) {
         return false;
     }
     
