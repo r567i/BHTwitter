@@ -876,6 +876,7 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
 // Twitter save all the features and keys in side JSON file in bundle of application fs_embedded_defaults_production.json, and use it in TFNTwitterAccount class but with DM voice maybe developers forget to add boolean variable in the class, so i had to change it from the file.
 // also, you can find every key for every feature i used in this tweak, i can remove all the codes below and find every key for it but I'm lazy to do that, :)
 - (BOOL)boolForKey:(NSString *)key {
+    NSLog(@"boolForKey: %@", key);
     if ([key isEqualToString:@"edit_tweet_enabled"] || [key isEqualToString:@"edit_tweet_ga_composition_enabled"] || [key isEqualToString:@"edit_tweet_pdp_dialog_enabled"] || [key isEqualToString:@"edit_tweet_upsell_enabled"]) {
         return true;
     }
@@ -885,6 +886,10 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     }
 
     if ([key isEqualToString:@"explore_relaunch_enable_immersive_player_across_twitter"]) {
+        return false;
+    }
+
+    if ([BHTManager testFeatures] && [key containsString:@"subscription"]) {
         return false;
     }
     
