@@ -1541,3 +1541,17 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     return [BHTManager forceTranslatable] ? true : %orig;
 }
 %end
+
+%hook TFNScrollingHorizontalLabelCollectionView
+- (id)_cellForItemAtIndexPath:(id)arg {
+    NSString *className = NSStringFromClass([arg class]);
+    NSLog(@"[_cellForItemAtIndexPathName] %@", className);
+    NSArray *symbols = [NSThread callStackSymbols];
+    int i = 0;
+    for (NSString *line in symbols) {
+        NSLog(@"[_cellForItemAtIndexPath][%d] %@", i, line);
+        i++;
+    }
+    NSLog(@"[_cellForItemAtIndexPath] stack trace end");
+    return %orig;
+}

@@ -433,6 +433,9 @@ static NSString *_lastCopiedURL;
 - (id)parentViewController;
 @end
 
+@interface TFNScrollingHorizontalLabelCollectionView : UICollectionView
+@end
+
 @class FLEXAlert, FLEXAlertAction;
 
 typedef void (^FLEXAlertReveal)(void);
