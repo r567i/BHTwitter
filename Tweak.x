@@ -39,6 +39,32 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     }
 }
 
+static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
+    if (![BHTManager hideBlockedAccountTweets] && ![BHTManager hideMutedAccountTweets]) {
+        return NO;
+    }
+    if ([BHTManager onlyInLists]) {
+        if (![model.scribeComponent isEqualToString:@"suggest_organic_list_tweet"]) {
+            return NO;
+        }
+    }
+    NSArray<TFNTwitterUser *> *users = @[model.fromUser, model.representedFromUser];
+    for (TFNTwitterUser *user in users) {
+        if (!user || ![user respondsToSelector:@selector(relationship)]) {
+            continue;
+        }
+        TFSTwitterRelationship *relationship = user.relationship;
+        if (!relationship) continue;
+        NSInteger muted = relationship.mutedByCurrentAccountState;
+        NSInteger blocked = relationship.blockedByCurrentAccountState;
+        if (([BHTManager hideBlockedAccountTweets] && blocked == 1) ||
+            ([BHTManager hideMutedAccountTweets] && muted == 1)) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
 // MARK: Clean cache and Padlock
 %hook T1AppDelegate
 - (_Bool)application:(UIApplication *)application didFinishLaunchingWithOptions:(id)arg2 {
@@ -270,12 +296,19 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     UITableViewCell *_orig = %orig;
     id tweet = [self itemAtIndexPath:arg2];
     NSString *class_name = NSStringFromClass([tweet classForCoder]);
-    
+
     if ([BHTManager HidePromoted] && [tweet respondsToSelector:@selector(isPromoted)] && [tweet performSelector:@selector(isPromoted)]) {
         [_orig setHidden:YES];
     }
-    
-    
+
+    // if (([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
+    //     [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
+    //     [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+    //     if (ShouldHideTweetForUser(tweet)) {
+    //         [_orig setHidden:true];
+    //     }
+    // }
+
     if ([self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"]) {
         if ([BHTManager hideWhoToFollow]) {
             if ([class_name isEqualToString:@"T1URTTimelineUserItemViewModel"] || [class_name isEqualToString:@"T1TwitterSwift.URTTimelineCarouselViewModel"] || [class_name isEqualToString:@"TwitterURT.URTModuleHeaderViewModel"] || [class_name isEqualToString:@"TwitterURT.URTModuleFooterViewModel"]) {
@@ -296,10 +329,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
         }
         
         if ([BHTManager HidePromoted] && [class_name isEqualToString:@"TwitterURT.URTTimelineEventSummaryViewModel"]) {
-            _TtC10TwitterURT32URTTimelineEventSummaryViewModel *trendModel = tweet;
-            if ([[trendModel.scribeItem allKeys] containsObject:@"promoted_id"]) {
-                [_orig setHidden:true];
-            }
+            [_orig setHidden:true];
         }
         if ([BHTManager HidePromoted] && [class_name isEqualToString:@"TwitterURT.URTTimelineTrendViewModel"]) {
             _TtC10TwitterURT25URTTimelineTrendViewModel *trendModel = tweet;
@@ -344,6 +374,14 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     if ([BHTManager HidePromoted] && [tweet respondsToSelector:@selector(isPromoted)] && [tweet performSelector:@selector(isPromoted)]) {
         return 0;
     }
+
+    // if (([self.adDisplayLocation isEqualToString:@"TIMELINE_HOME"] ||
+    //     [self.adDisplayLocation isEqualToString:@"OTHER"]) &&
+    //     [tweet isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+    //     if (ShouldHideTweetForUser(tweet)) {
+    //         return 0;
+    //     }
+    // }
     
     if ([self.adDisplayLocation isEqualToString:@"PROFILE_TWEETS"]) {
         if ([BHTManager hideWhoToFollow]) {
@@ -364,10 +402,7 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
         }
         
         if ([BHTManager HidePromoted] && [class_name isEqualToString:@"TwitterURT.URTTimelineEventSummaryViewModel"]) {
-            _TtC10TwitterURT32URTTimelineEventSummaryViewModel *trendModel = tweet;
-            if ([[trendModel.scribeItem allKeys] containsObject:@"promoted_id"]) {
-                return 0;
-            }
+            return 0;
         }
         if ([BHTManager HidePromoted] && [class_name isEqualToString:@"TwitterURT.URTTimelineTrendViewModel"]) {
             _TtC10TwitterURT25URTTimelineTrendViewModel *trendModel = tweet;
@@ -421,6 +456,9 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 %hook TFNTwitterStatus
 - (_Bool)isCardHidden {
     return ([BHTManager HidePromoted] && [self isPromoted]) ? true : %orig;
+}
+- (BOOL)isTranslatable {
+    return [BHTManager forceTranslatable] ? true : %orig;
 }
 %end
 
@@ -838,12 +876,23 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 // Twitter save all the features and keys in side JSON file in bundle of application fs_embedded_defaults_production.json, and use it in TFNTwitterAccount class but with DM voice maybe developers forget to add boolean variable in the class, so i had to change it from the file.
 // also, you can find every key for every feature i used in this tweak, i can remove all the codes below and find every key for it but I'm lazy to do that, :)
 - (BOOL)boolForKey:(NSString *)key {
+    // BOOL _orig = %orig;
+    // NSLog(@"boolForKey: %@ -> %d", key, _orig);
     if ([key isEqualToString:@"edit_tweet_enabled"] || [key isEqualToString:@"edit_tweet_ga_composition_enabled"] || [key isEqualToString:@"edit_tweet_pdp_dialog_enabled"] || [key isEqualToString:@"edit_tweet_upsell_enabled"]) {
         return true;
     }
     
     if ([key isEqualToString:@"conversational_replies_ios_pinned_replies_consumption_enabled"] || [key isEqualToString:@"conversational_replies_ios_pinned_replies_creation_enabled"]) {
         return true;
+    }
+
+    if ([key isEqualToString:@"explore_relaunch_enable_immersive_player_across_twitter"]) {
+        return false;
+    }
+
+    if ([BHTManager hidePremiumOffer] &&
+    ([key containsString:@"subscription"] || [key containsString:@"monetiz"])) {
+        return false;
     }
     
     return %orig;
@@ -1296,6 +1345,53 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
 }
 %end
 
+// MARK: Always Following Page
+// https://github.com/cbjn/XNotForMe/blob/main/Tweak.x
+%hook TFNScrollingSegmentedViewController
+-(NSInteger)selectedIndex {
+    NSInteger originalIndex = %orig;
+    if ([BHTManager alwaysFollowingPage] &&
+        [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")] &&
+        originalIndex == 0) {
+        return 1;
+    }
+    return originalIndex;
+}
+
+-(NSInteger)initialSelectedIndex {
+    NSInteger originalIndex = %orig;
+    if ((([BHTManager alwaysFollowingPage] && [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) ||
+        ([BHTManager trendingAsDefault] && [[self.parentViewController class] isEqual:NSClassFromString(@"T1TwitterSwift.URTChromeViewController")]) ||
+        ([BHTManager latestAsDefault] && [[self.parentViewController class] isEqual:NSClassFromString(@"TTSSearchContainerViewController")])) &&
+        originalIndex == 0) {
+        return 1;
+    }
+    return originalIndex;
+}
+
+- (void)setSelectedIndex:(NSInteger)originalIndex {
+    if ([BHTManager alwaysFollowingPage] && 
+        [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")] &&
+        originalIndex == 0) {
+        return %orig(1);;
+    }
+   return %orig(originalIndex);
+}
+
+-(id)pagingViewController:(id)arg1 viewControllerAtIndexPath:(id)arg2 {
+    if ([[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")]) {
+        NSInteger rowIndex = [arg2 row];
+        if ([BHTManager alwaysFollowingPage]) {
+            if (rowIndex == 0) {
+                rowIndex = 1;
+            }
+        }
+        return %orig(arg1, [NSIndexPath indexPathForRow:rowIndex inSection:[arg2 section]]);
+    }
+    return %orig;
+}
+%end
+
 // MARK: Clean tracking from copied links: https://github.com/BandarHL/BHTwitter/issues/75
 %ctor {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -1341,3 +1437,101 @@ static void batchSwizzlingOnClass(Class cls, NSArray<NSString*>*origSelectors, I
     %init;
 }
 
+// MARK: Remove "Discover More" section
+// Helper function to check if we're in the T1ConversationContainerViewController hierarchy
+// https://github.com/NeoFreeBird/tweak @nyathea
+static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewController) {
+    if (!viewController) return NO;
+    
+    // Check all view controllers up the hierarchy
+    UIViewController *currentVC = viewController;
+    while (currentVC) {
+        NSString *className = NSStringFromClass([currentVC class]);
+        
+        // Check for T1ConversationContainerViewController
+        if ([className isEqualToString:@"T1ConversationContainerViewController"]) {
+            return YES;
+        }
+        
+        // Move up the hierarchy
+        if (currentVC.parentViewController) {
+            currentVC = currentVC.parentViewController;
+        } else if (currentVC.navigationController) {
+            currentVC = currentVC.navigationController;
+        } else if (currentVC.presentingViewController) {
+            currentVC = currentVC.presentingViewController;
+        } else {
+            break;
+        }
+    }
+    
+    return NO;
+}
+
+%hook T1URTViewController
+
+- (void)setSections:(NSArray *)sections {
+    if ([BHTManager hideDiscoverMore]) {
+        // Only filter if we're in the T1ConversationContainerViewController hierarchy
+        BOOL inConversationHierarchy = BHT_isInConversationContainerHierarchy((UIViewController *)self);
+        
+        if (inConversationHierarchy) {
+            // Remove entry 1 (index 1) from sections array
+            if (sections.count > 1) {
+                NSMutableArray *filteredSections = [NSMutableArray arrayWithArray:sections];
+                [filteredSections removeObjectAtIndex:1];
+                sections = [filteredSections copy];
+            }
+        }
+    }
+    %orig(sections);
+}
+
+%end
+
+// MARK: hide ADS - New Implementation & ide tweets
+%hook TFNItemsDataViewAdapterRegistry
+- (id)dataViewAdapterForItem:(id)item {
+    if ([BHTManager HidePromoted]) {
+        //Old Ads
+        if ([item isKindOfClass:objc_getClass("T1URTTimelineStatusItemViewModel")] && ((T1URTTimelineStatusItemViewModel *)item).isPromoted) {
+            return nil;
+        }
+        //New Ads
+        if ([item isKindOfClass:objc_getClass("TwitterURT.URTTimelineGoogleNativeAdViewModel")]) {
+            return nil;
+        }
+    }
+
+    if ([BHTManager alwaysFollowingPage] && [item isKindOfClass:objc_getClass("THFHomeShimmerItem")]) {
+        return nil;
+    }
+
+    if ([item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+        if (ShouldHideTweetForUser(item)) {
+            return nil;
+        }
+    }
+    return %orig;
+}
+%end
+
+%hook NSMutableURLRequest
+- (void)setValue:(NSString *)value forHTTPHeaderField:(NSString *)field {
+    if ([BHTManager changeTranslateLang] && self.URL &&
+        ([self.URL.absoluteString containsString:@"TranslateTweetResults"] ||
+        ([self.URL.absoluteString containsString:@"ConversationTimeline"] && ![BHTManager forceTranslatable])) &&
+        ([field isEqualToString:@"X-Twitter-Client-Language"] || [field isEqualToString:@"Accept-Language"])) {
+        NSString *lang = [BHTManager translateLang];
+        %orig(lang, field);
+        return;
+    }    
+    %orig(value, field);
+}
+%end
+
+%hook T1URTTimelineStatusItemViewModel
+- (BOOL)isTranslatable {
+    return [BHTManager forceTranslatable] ? true : %orig;
+}
+%end

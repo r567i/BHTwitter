@@ -31,6 +31,10 @@
 + (BOOL)FollowConfirm;
 + (BOOL)HidePromoted;
 + (BOOL)HideTopics;
++ (BOOL)hideDiscoverMore;
++ (BOOL)hideBlockedAccountTweets;
++ (BOOL)onlyInLists;
++ (BOOL)hideMutedAccountTweets;
 + (BOOL)DisableVODCaptions;
 + (BOOL)Padlock;
 + (BOOL)OldStyle;
@@ -52,10 +56,16 @@
 + (BOOL)forceTweetFullFrame;
 + (BOOL)stripTrackingParams;
 + (BOOL)alwaysFollowingPage;
++ (BOOL)trendingAsDefault;
++ (BOOL)latestAsDefault;
 + (BOOL)stopHidingTabBar;
 + (BOOL)changeBackground;
 + (bool)backgroundImage;
 + (BOOL)hideBookmarkButton;
 + (BOOL)customVoice;
++ (BOOL)testFeatures;
++ (BOOL)changeTranslateLang;
++ (NSString *)translateLang;
++ (BOOL)forceTranslatable;
 @end
 

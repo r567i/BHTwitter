@@ -149,6 +149,14 @@
 
         PSSpecifier *hideTopics = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_OPTION_DETAIL_TITLE"] key:@"hide_topics" defaultValue:false changeAction:nil];
         
+        PSSpecifier *hideDiscoverMore = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_DISCOVER_MORE_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_DISCOVER_MORE_OPTION_DETAIL_TITLE"] key:@"hide_discover_more" defaultValue:false changeAction:nil];
+        
+        PSSpecifier *hideBlockedAccountTweets = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_BLOCKED_ACCOUNT_TWEETS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_BLOCKED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE"] key:@"hide_blocked_account_tweets" defaultValue:false changeAction:nil];
+        
+        PSSpecifier *hideMutedAccountTweets = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_MUTED_ACCOUNT_TWEETS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_MUTED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE"] key:@"hide_muted_account_tweets" defaultValue:false changeAction:nil];
+        
+        PSSpecifier *onlyInLists = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"ONLY_IN_LISTS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"ONLY_IN_LISTS_OPTION_DETAIL_TITLE"] key:@"only_in_lists" defaultValue:false changeAction:nil];
+        
         PSSpecifier *hideWhoToFollow = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_WHO_FOLLOW_OPTION"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_WHO_FOLLOW_OPTION_DETAIL_TITLE"] key:@"hide_who_to_follow" defaultValue:false changeAction:nil];
         
         PSSpecifier *hideTopicsToFollow = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_TO_FOLLOW_OPTION"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"HIDE_TOPICS_TO_FOLLOW_OPTION_DETAIL_TITLE"] key:@"hide_topics_to_follow" defaultValue:false changeAction:nil];
@@ -189,6 +197,12 @@
 
         PSSpecifier *urlHost = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"SELECT_URL_HOST_AFTER_COPY_OPTION_TITLE"] detailTitle:[[NSUserDefaults standardUserDefaults] objectForKey:@"tweet_url_host"] dynamicRule:@"strip_tracking_params, ==, 0" action:@selector(showURLHostSelectionViewController:)];
 
+        PSSpecifier *changeTranslateLang = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"CHANGE_TRANSLATE_LANG_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"CHANGE_TRANSLATE_LANG_OPTION_DETAIL_TITLE"] key:@"change_translate_lang" defaultValue:false changeAction:nil];
+
+        PSSpecifier *translateLang = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRANSLATE_LANG_OPTION_TITLE"] detailTitle:[[NSUserDefaults standardUserDefaults] objectForKey:@"translate_lang"] ?: @"Default App Lang" dynamicRule:@"change_translate_lang, ==, 0" action:@selector(showTranslateLangSelect:)];
+
+        PSSpecifier *forceTranslatable = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FORCE_TRANSLATABLE_OPTION_TITLE"] detailTitle:nil key:@"force_translatable" defaultValue:false changeAction:nil];
+
         // Twitter bule section
         PSSpecifier *undoTweet = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"UNDO_TWEET_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"UNDO_TWEET_OPTION_DETAIL_TITLE"] key:@"undo_tweet" defaultValue:false changeAction:nil];
         
@@ -212,6 +226,12 @@
         PSSpecifier *forceFullFrame = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FORCE_TWEET_FULL_FRAME_TITLE"] detailTitle:nil key:@"force_tweet_full_frame" defaultValue:false changeAction:nil];
         
         PSSpecifier *showScrollIndicator = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"SHOW_SCOLL_INDICATOR_OPTION_TITLE"] detailTitle:nil key:@"showScollIndicator" defaultValue:false changeAction:nil];
+
+        PSSpecifier *alwaysFollowingPage = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"ALWAYS_FOLLOWING_PAGE_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE"] key:@"always_following_page" defaultValue:false changeAction:nil];
+        
+        PSSpecifier *trendingAsDefault = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRENDING_AS_DEFAULT_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRENDING_AS_DEFAULT_OPTION_DETAIL_TITLE"] key:@"trending_as_default" defaultValue:false changeAction:nil];
+        
+        PSSpecifier *latestAsDefault = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"LATEST_AS_DEFAULT_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"LATEST_AS_DEFAULT_OPTION_DETAIL_TITLE"] key:@"latest_as_default" defaultValue:false changeAction:nil];
         
         PSSpecifier *font = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FONT_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FONT_OPTION_DETAIL_TITLE"] key:@"en_font" defaultValue:false changeAction:nil];
         
@@ -221,6 +241,8 @@
         
         // debug section
         PSSpecifier *flex = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FLEX_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FLEX_OPTION_DETAIL_TITLE"] key:@"flex_twitter" defaultValue:false changeAction:@selector(FLEXAction:)];
+        
+        PSSpecifier *testFeatures = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TEST_FEATURES_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TEST_FEATURES_OPTION_DETAIL_TITLE"] key:@"test_features" defaultValue:false changeAction:nil];
         
         // legal section
         PSSpecifier *acknowledgements = [self newButtonCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"LEGAL_BUTTON_TITLE"] detailTitle:nil dynamicRule:nil action:@selector(showAcknowledgements:)];
@@ -238,6 +260,10 @@
             hideAds,
             customVoice,
             hideTopics,
+            hideDiscoverMore,
+            hideBlockedAccountTweets,
+            hideMutedAccountTweets,
+            onlyInLists,
             hideWhoToFollow,
             hideTopicsToFollow,
             hidePremiumOffer,
@@ -259,6 +285,9 @@
             alwaysOpenSafari,
             stripTrackingParams,
             urlHost,
+            forceTranslatable,
+            changeTranslateLang,
+            translateLang,
             
             twitterBlueSection, // 1
             undoTweet,
@@ -274,6 +303,9 @@
             hideBookmarkButton,
             forceFullFrame,
             showScrollIndicator,
+            alwaysFollowingPage,
+            trendingAsDefault,
+            latestAsDefault,
             font,
             regularFontsPicker,
             boldFontsPicker,
@@ -283,6 +315,7 @@
             
             debug, // 4
             flex,
+            testFeatures,
             
             developer, // 5
             bandarHL,
@@ -543,6 +576,68 @@
     [alert addAction:cancel];
     
     [self presentViewController:alert animated:true completion:nil];
+}
+- (void)showTranslateLangSelect:(PSSpecifier *)specifier {
+    NSString *currentValue = [[NSUserDefaults standardUserDefaults] stringForKey:@"translate_lang"];
+
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"TRANSLATE_LANG_OPTION_TITLE"]
+                                                                   message:@"Select the language for translation"
+                                                            preferredStyle:UIAlertControllerStyleActionSheet];
+    NSDictionary *languages = @{
+        @"ar": @"Arabic",
+        @"zh": @"Chinese",
+        @"cs": @"Czech",
+        @"da": @"Danish",
+        @"nl": @"Dutch",
+        @"en": @"English",
+        @"fi": @"Finnish",
+        @"fr": @"French",
+        @"de": @"German",
+        @"el": @"Greek",
+        @"he": @"Hebrew",
+        @"hi": @"Hindi",
+        @"hu": @"Hungarian",
+        @"id": @"Indonesian",
+        @"it": @"Italian",
+        @"ja": @"Japanese",
+        @"ko": @"Korean",
+        @"ms": @"Malay",
+        @"nb": @"Norwegian",
+        @"pl": @"Polish",
+        @"pt": @"Portuguese",
+        @"ro": @"Romanian",
+        @"ru": @"Russian",
+        @"sk": @"Slovak",
+        @"es": @"Spanish",
+        @"sv": @"Swedish",
+        @"th": @"Thai",
+        @"tr": @"Turkish",
+        @"uk": @"Ukrainian",
+        @"vi": @"Vietnamese"
+    };
+    for (NSString *code in languages) {
+        NSString *langName = [languages objectForKey:code];
+        NSString *title = [NSString stringWithFormat:@"%@ - %@", code, langName];
+        if ([code isEqualToString:currentValue]) {
+            title = [NSString stringWithFormat:@"✓ %@", title];
+        }
+        [alert addAction:[UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            [[NSUserDefaults standardUserDefaults] setObject:code forKey:@"translate_lang"];
+            [specifier setProperty:[NSString stringWithFormat:@"%@ - %@", code, langName] forKey:@"subtitle"];
+            [self reloadSpecifiers];
+        }]];
+    }
+    [alert addAction:[UIAlertAction actionWithTitle:@"Default App Lang"
+                                              style:UIAlertActionStyleDestructive
+                                            handler:^(UIAlertAction * _Nonnull action) {
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"translate_lang"];
+        [specifier setProperty:@"Default App Lang" forKey:@"subtitle"];
+        [self reloadSpecifiers];
+    }]];
+    [alert addAction:[UIAlertAction actionWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"CANCEL_BUTTON_TITLE"]
+                                              style:UIAlertActionStyleCancel
+                                            handler:nil]];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 - (void)showCustomBackgroundViewViewController:(PSSpecifier *)specifier {
     UITableViewCell *specifierCell = [specifier propertyForKey:PSTableCellKey];

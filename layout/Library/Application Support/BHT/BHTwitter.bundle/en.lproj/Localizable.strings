@@ -44,6 +44,18 @@
 "HIDE_TOPICS_OPTION_TITLE" = "Hide topics tweets";
 "HIDE_TOPICS_OPTION_DETAIL_TITLE" = "Remove all topics tweets from the timeline.";
 
+"HIDE_DISCOVER_MORE_OPTION_TITLE" = "Hide Discover More";
+"HIDE_DISCOVER_MORE_OPTION_DETAIL_TITLE" = "Remove Discover More in tweet detail.";
+
+"HIDE_BLOCKED_ACCOUNT_TWEETS_OPTION_TITLE" = "Hide Blocked account tweets";
+"HIDE_BLOCKED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE" = "Remove all Blocked account tweets in Twitter.";
+
+"HIDE_MUTED_ACCOUNT_TWEETS_OPTION_TITLE" = "Hide Muted account tweets";
+"HIDE_MUTED_ACCOUNT_TWEETS_OPTION_DETAIL_TITLE" = "Remove all Muted account tweets in Twitter.";
+
+"ONLY_IN_LISTS_OPTION_TITLE" = "Hide tweets only in Lists";
+"ONLY_IN_LISTS_OPTION_DETAIL_TITLE" = "Remove Blocked/Muted tweets only in Lists view";
+
 "HIDE_WHO_FOLLOW_OPTION" = "Hide Who to follow section";
 "HIDE_WHO_FOLLOW_OPTION_DETAIL_TITLE" = "Hide Who to follow section in Profiles";
 
@@ -108,6 +120,13 @@
 "STRIP_URL_TRACKING_PARAMETERS_TITLE" = "Remove tracking from URL's";
 "STRIP_URL_TRACKING_PARAMETERS_DETAIL_TITLE" = "Strip tracking parameters from tweet URL's when it's copy";
 
+"CHANGE_TRANSLATE_LANG_OPTION_TITLE" = "Change Translation Language";
+"CHANGE_TRANSLATE_LANG_OPTION_DETAIL_TITLE" = "Select the target language for translation";
+
+"TRANSLATE_LANG_OPTION_TITLE" = "Select Language for Translation";
+
+"FORCE_TRANSLATABLE_OPTION_TITLE" = "Force Translatable";
+
 "TWITTER_BLUE_SECTION_HEADER_TITLE" = "Twitter blue features";
 "UNDO_TWEET_OPTION_TITLE" = "Undo tweets feature";
 "UNDO_TWEET_OPTION_DETAIL_TITLE" = "Undo tweets after tweeting.";
@@ -158,6 +177,12 @@
 "ALWAYS_FOLLOWING_PAGE_OPTION_TITLE" = "Always start on Following page";
 "ALWAYS_FOLLOWING_PAGE_OPTION_DETAIL_TITLE" = "Force Twitter to always use Following section of the timeline when the user start the application";
 
+"TRENDING_AS_DEFAULT_OPTION_TITLE" = "Start Explore on Trending";
+"TRENDING_AS_DEFAULT_OPTION_DETAIL_TITLE" = "Force Explore to start from the Trending section";
+
+"LATEST_AS_DEFAULT_OPTION_TITLE" = "Start Search on Latest";
+"LATEST_AS_DEFAULT_OPTION_DETAIL_TITLE" = "Force Search to start from the Latest section";
+
 "FONT_OPTION_TITLE" = "Enable changing font";
 "FONT_OPTION_DETAIL_TITLE" = "Option to allow changing Twitter font and show font picker.";
 
@@ -168,6 +193,9 @@
 "DEBUG_SECTION_HEADER_TITLE" = "Debugging";
 "FLEX_OPTION_TITLE" = "Enable FLEX";
 "FLEX_OPTION_DETAIL_TITLE" = "Show FLEX on twitter app.";
+
+"TEST_FEATURES_OPTION_TITLE" = "Enable test features";
+"TEST_FEATURES_OPTION_DETAIL_TITLE" = "Trying test features";
 
 "LEGAL_SECTION_HEADER_TITLE" = "Legal notices";
 "LEGAL_BUTTON_TITLE" = "Acknowledgements";

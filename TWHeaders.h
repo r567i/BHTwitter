@@ -112,6 +112,9 @@ static NSString *_lastCopiedURL;
 - (void)_tfn_insertItem:(id)item atIndexPath:(NSIndexPath *)indexPath;
 @end
 
+@interface T1URTViewController : TFNItemsDataViewController
+@end
+
 @interface T1TabView : UIView
 @property(readonly, nonatomic) UILabel *titleLabel;
 @property(readonly, nonatomic) long long panelID;
@@ -126,6 +129,10 @@ static NSString *_lastCopiedURL;
 @property (nonatomic, strong) TFNItemsDataViewControllerBackingStore *backingStore;
 @property (nonatomic, strong) NSArray *sections;
 @property (nonatomic, strong) TFNTwitterAccount *account;
+@end
+
+@interface TFNScrollingHorizontalLabelView : UIView
+- (UIViewController *)NearestViewController;
 @end
 
 @interface TFNNavigationController : UINavigationController
@@ -374,10 +381,22 @@ static NSString *_lastCopiedURL;
 @interface TFNTwitterURTTimelineStatusTopicBanner : TFNTwitterURTTimelineStatusBanner
 @end
 
+@interface TFSTwitterRelationship : NSObject
+@property(nonatomic, readonly) NSInteger mutedByCurrentAccountState;
+@property(nonatomic, readonly) NSInteger blockedByCurrentAccountState;
+@end
+
+@interface TFNTwitterUser : NSObject
+@property(readonly, nonatomic) TFSTwitterRelationship *relationship;
+@end
+
 @interface T1URTTimelineStatusItemViewModel : NSObject
 @property(nonatomic, readonly) NSString *text;
+@property(nonatomic, readonly) NSString *scribeComponent;
 @property(nonatomic, readonly) _Bool isPromoted;
 @property(nonatomic, retain) id <TFNTwitterStatusBanner> banner;
+@property(nonatomic, readonly) TFNTwitterUser *fromUser;
+@property(nonatomic, readonly) TFNTwitterUser *representedFromUser;
 @end
 
 @interface TFNTwitterStatus : NSObject
@@ -408,6 +427,10 @@ static NSString *_lastCopiedURL;
 
 @interface _TtC10TwitterURT25URTTimelineTrendViewModel : NSObject
 @property(nonatomic, readonly) NSDictionary *scribeItem;
+@end
+
+@interface TFNScrollingSegmentedViewController : UIViewController
+- (id)parentViewController;
 @end
 
 @class FLEXAlert, FLEXAlertAction;

@@ -169,6 +169,18 @@
 + (BOOL)HideTopics {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_topics"];
 }
++ (BOOL)hideDiscoverMore {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_discover_more"];
+}
++ (BOOL)hideBlockedAccountTweets {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_blocked_account_tweets"];
+}
++ (BOOL)hideMutedAccountTweets {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"hide_muted_account_tweets"];
+}
++ (BOOL)onlyInLists {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"only_in_lists"];
+}
 + (BOOL)DisableVODCaptions {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"dis_VODCaptions"];
 }
@@ -241,6 +253,12 @@
 + (BOOL)alwaysFollowingPage {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"always_following_page"];
 }
++ (BOOL)trendingAsDefault {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"trending_as_default"];
+}
++ (BOOL)latestAsDefault {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"latest_as_default"];
+}
 + (BOOL)stopHidingTabBar {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"no_tab_bar_hiding"];
 }
@@ -255,6 +273,19 @@
 }
 + (BOOL)customVoice {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"custom_voice_upload"];
+}
++ (BOOL)testFeatures {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"test_features"];
+}
++ (BOOL)changeTranslateLang {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"change_translate_lang"];
+}
++ (NSString *)translateLang {
+    NSString *translateLang = [[NSUserDefaults standardUserDefaults] stringForKey:@"translate_lang"];
+    return translateLang;
+}
++ (BOOL)forceTranslatable {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"force_translatable"];
 }
 + (UIViewController *)BHTSettingsWithAccount:(TFNTwitterAccount *)twAccount {
     SettingsViewController *pref = [[SettingsViewController alloc] initWithTwitterAccount:twAccount];
