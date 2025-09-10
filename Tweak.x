@@ -942,7 +942,7 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
 }
 - (id)homeTimelineViewController {
     if ([BHTManager alwaysFollowingPage]) {
-        return;
+        return nil;
     }
     return %orig;
 }
