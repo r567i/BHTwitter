@@ -1535,3 +1535,17 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     return [BHTManager forceTranslatable] ? true : %orig;
 }
 %end
+
+%hook TFNContainerViewControllerEntry
+- (void)setViewController:(id)controller {
+    NSLog(@"TFNContainerViewControllerEntry Call stack:\n%@", [NSThread callStackSymbols]);
+    return %orig;
+}
+%end
+
+%hook NSIndexPath
++ (id)indexPathForRow:(NSInteger)row inSection:(NSInteger)section {
+    NSLog(@"NSIndexPath Call stack:\n%@", [NSThread callStackSymbols]);
+    return %orig;
+}
+%end
