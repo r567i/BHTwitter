@@ -1396,6 +1396,7 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     }
     return %orig;
 }
+%end
 
 // MARK: Clean tracking from copied links: https://github.com/BandarHL/BHTwitter/issues/75
 %ctor {
