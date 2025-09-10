@@ -1539,13 +1539,26 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %hook TFNContainerViewControllerEntry
 - (void)setViewController:(id)controller {
     NSLog(@"TFNContainerViewControllerEntry Call stack:\n%@", [NSThread callStackSymbols]);
+    NSArray *symbols = [NSThread callStackSymbols];
+    int i = 0;
+    for (NSString *line in symbols) {
+        NSLog(@"[TFNContainerViewControllerEntry][%d] %@", i, line);
+        i++;
+    }
+    NSLog(@"[TFNContainerViewControllerEntry] stack trace end");
     return %orig;
 }
 %end
 
 %hook NSIndexPath
 + (id)indexPathForRow:(NSInteger)row inSection:(NSInteger)section {
-    NSLog(@"NSIndexPath Call stack:\n%@", [NSThread callStackSymbols]);
+    NSArray *symbols = [NSThread callStackSymbols];
+    int i = 0;
+    for (NSString *line in symbols) {
+        NSLog(@"[NSIndexPathHook][%d] %@", i, line);
+        i++;
+    }
+    NSLog(@"[NSIndexPathHook] stack trace end");
     return %orig;
 }
 %end
