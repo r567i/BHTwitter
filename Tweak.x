@@ -1555,3 +1555,4 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     NSLog(@"[_cellForItemAtIndexPath] stack trace end");
     return %orig;
 }
+%end
