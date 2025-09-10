@@ -1543,16 +1543,16 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %end
 
 %hook TFNScrollingHorizontalLabelCollectionView
-- (id)_cellForItemAtIndexPath:(id)arg {
+- (void)insertItemsAtIndexPaths:(id)arg {
     NSString *className = NSStringFromClass([arg class]);
-    NSLog(@"[_cellForItemAtIndexPathName] %@", className);
+    NSLog(@"[insertItemsAtIndexPathsName] %@", className);
     NSArray *symbols = [NSThread callStackSymbols];
     int i = 0;
     for (NSString *line in symbols) {
-        NSLog(@"[_cellForItemAtIndexPath][%d] %@", i, line);
+        NSLog(@"[insertItemsAtIndexPaths][%d] %@", i, line);
         i++;
     }
-    NSLog(@"[_cellForItemAtIndexPath] stack trace end");
+    NSLog(@"[insertItemsAtIndexPaths] stack trace end");
     return %orig;
 }
 %end
