@@ -1390,6 +1390,17 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     }
     return %orig;
 }
+
+-(void)setLabelBar:(id)arg {
+    NSString *className = NSStringFromClass([arg class]);
+    NSLog(@"[setLabelBar]: %@", className);
+    return %orig;
+}
+-(void)setExternalLabelBar:(id)arg {
+    NSString *className = NSStringFromClass([arg class]);
+    NSLog(@"[setExternalLabelBar]: %@", className);
+    return %orig;
+}
 %end
 
 // MARK: Clean tracking from copied links: https://github.com/BandarHL/BHTwitter/issues/75
@@ -1551,7 +1562,7 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %end
 
 %hook NSIndexPath
-+ (id)indexPathForRow:(NSInteger)row inSection:(NSInteger)section {
+- (id)initWithIndexes:(NSUInteger *)indexes length:(NSUInteger)length {
     NSArray *symbols = [NSThread callStackSymbols];
     int i = 0;
     for (NSString *line in symbols) {
