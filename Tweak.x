@@ -940,6 +940,12 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     }
     return %orig;
 }
+- (id)homeTimelineViewController {
+    if ([BHTManager alwaysFollowingPage]) {
+        return;
+    }
+    return %orig;
+}
 %end
 
 %hook TFNTwitterMediaUploadConfiguration
@@ -1391,18 +1397,6 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     return %orig;
 }
 
--(void)setLabelBar:(id)arg {
-    NSString *className = NSStringFromClass([arg class]);
-    NSLog(@"[setLabelBar]: %@", className);
-    return %orig;
-}
--(void)setExternalLabelBar:(id)arg {
-    NSString *className = NSStringFromClass([arg class]);
-    NSLog(@"[setExternalLabelBar]: %@", className);
-    return %orig;
-}
-%end
-
 // MARK: Clean tracking from copied links: https://github.com/BandarHL/BHTwitter/issues/75
 %ctor {
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
@@ -1544,32 +1538,5 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %hook T1URTTimelineStatusItemViewModel
 - (BOOL)isTranslatable {
     return [BHTManager forceTranslatable] ? true : %orig;
-}
-%end
-
-%hook TFNContainerViewControllerEntry
-- (void)setViewController:(id)controller {
-    NSLog(@"TFNContainerViewControllerEntry Call stack:\n%@", [NSThread callStackSymbols]);
-    NSArray *symbols = [NSThread callStackSymbols];
-    int i = 0;
-    for (NSString *line in symbols) {
-        NSLog(@"[TFNContainerViewControllerEntry][%d] %@", i, line);
-        i++;
-    }
-    NSLog(@"[TFNContainerViewControllerEntry] stack trace end");
-    return %orig;
-}
-%end
-
-%hook NSIndexPath
-- (id)initWithIndexes:(NSUInteger *)indexes length:(NSUInteger)length {
-    NSArray *symbols = [NSThread callStackSymbols];
-    int i = 0;
-    for (NSString *line in symbols) {
-        NSLog(@"[NSIndexPathHook][%d] %@", i, line);
-        i++;
-    }
-    NSLog(@"[NSIndexPathHook] stack trace end");
-    return %orig;
 }
 %end
