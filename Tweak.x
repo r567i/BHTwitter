@@ -363,6 +363,12 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
                 [_orig setHidden:true];
             }
         }
+
+        if ([BHTManager hideWhoToFollow]) {
+            if ([class_name isEqualToString:@"T1URTTimelineUserItemViewModel"] || [class_name isEqualToString:@"T1TwitterSwift.URTTimelineCarouselViewModel"] || [class_name isEqualToString:@"TwitterURT.URTModuleHeaderViewModel"] || [class_name isEqualToString:@"TwitterURT.URTModuleFooterViewModel"]) {
+                [_orig setHidden:true];
+            }
+        }
     }
     
     return _orig;
@@ -435,6 +441,12 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
 
         if ([BHTManager hidePremiumOffer]) {
             if ([class_name isEqualToString:@"T1URTTimelineMessageItemViewModel"]) {
+                return 0;
+            }
+        }
+
+        if ([BHTManager hideWhoToFollow]) {
+            if ([class_name isEqualToString:@"T1URTTimelineUserItemViewModel"] || [class_name isEqualToString:@"T1TwitterSwift.URTTimelineCarouselViewModel"] || [class_name isEqualToString:@"TwitterURT.URTModuleHeaderViewModel"] || [class_name isEqualToString:@"TwitterURT.URTModuleFooterViewModel"]) {
                 return 0;
             }
         }
