@@ -995,7 +995,7 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
 
 %hook TFSTwitterAPICommandAccountStateProvider
 - (_Bool)allowPromotedContent {
-    return [BHTManager HidePromoted] ? true : %orig;
+    return [BHTManager HidePromoted] ? NO : %orig;
 }
 %end
 
@@ -1519,6 +1519,20 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
         if ([item isKindOfClass:objc_getClass("TwitterURT.URTTimelineGoogleNativeAdViewModel")]) {
             return nil;
         }
+
+        if ([item isKindOfClass:objc_getClass("T1SlideshowSlideViewModel")]) {
+            T1SlideshowSlideViewModel *slideViewModel = item;
+            TFNTwitterStatus *status = slideViewModel.status;
+            if (status.isPromoted) {
+                return nil;
+            }
+        }
+        if ([item isKindOfClass:objc_getClass("T1SlideshowSlideViewModel")]) {
+            TFNTwitterStatus *status = ((T1SlideshowSlideViewModel *)item).status;
+            if (status.isPromoted) {
+                return nil;
+            }
+        }
     }
 
     if ([BHTManager alwaysFollowingPage] && [item isKindOfClass:objc_getClass("THFHomeShimmerItem")]) {
@@ -1551,20 +1565,5 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %hook T1URTTimelineStatusItemViewModel
 - (BOOL)isTranslatable {
     return [BHTManager forceTranslatable] ? true : %orig;
-}
-%end
-
-%hook TFNScrollingHorizontalLabelCollectionView
-- (void)insertItemsAtIndexPaths:(id)arg {
-    NSString *className = NSStringFromClass([arg class]);
-    NSLog(@"[insertItemsAtIndexPathsName] %@", className);
-    NSArray *symbols = [NSThread callStackSymbols];
-    int i = 0;
-    for (NSString *line in symbols) {
-        NSLog(@"[insertItemsAtIndexPaths][%d] %@", i, line);
-        i++;
-    }
-    NSLog(@"[insertItemsAtIndexPaths] stack trace end");
-    return %orig;
 }
 %end

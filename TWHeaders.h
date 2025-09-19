@@ -399,6 +399,10 @@ static NSString *_lastCopiedURL;
 @property(nonatomic, readonly) TFNTwitterUser *representedFromUser;
 @end
 
+@interface T1SlideshowSlideViewModel : NSObject
+@property(nonatomic, readonly) TFNTwitterStatus *status;
+@end
+
 @interface TFNTwitterStatus : NSObject
 @property(readonly, nonatomic) NSDictionary *scribeParameters;
 @property(readonly, nonatomic) _Bool isPromoted;
