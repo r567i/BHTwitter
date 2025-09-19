@@ -440,6 +440,12 @@ static NSString *_lastCopiedURL;
 @interface TFNScrollingHorizontalLabelCollectionView : UICollectionView
 @end
 
+@interface T1TwitterMediaPreviewInfoSlideshowDataSource : NSObject
+@end
+
+@interface T1StatusTableViewControllerSlideshowDataSource : T1TwitterMediaPreviewInfoSlideshowDataSource
+@end
+
 @class FLEXAlert, FLEXAlertAction;
 
 typedef void (^FLEXAlertReveal)(void);

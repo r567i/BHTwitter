@@ -1519,20 +1519,6 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
         if ([item isKindOfClass:objc_getClass("TwitterURT.URTTimelineGoogleNativeAdViewModel")]) {
             return nil;
         }
-
-        if ([item isKindOfClass:objc_getClass("T1SlideshowSlideViewModel")]) {
-            T1SlideshowSlideViewModel *slideViewModel = item;
-            TFNTwitterStatus *status = slideViewModel.status;
-            if (status.isPromoted) {
-                return nil;
-            }
-        }
-        if ([item isKindOfClass:objc_getClass("T1SlideshowSlideViewModel")]) {
-            TFNTwitterStatus *status = ((T1SlideshowSlideViewModel *)item).status;
-            if (status.isPromoted) {
-                return nil;
-            }
-        }
     }
 
     if ([BHTManager alwaysFollowingPage] && [item isKindOfClass:objc_getClass("THFHomeShimmerItem")]) {
@@ -1565,5 +1551,33 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %hook T1URTTimelineStatusItemViewModel
 - (BOOL)isTranslatable {
     return [BHTManager forceTranslatable] ? true : %orig;
+}
+%end
+
+void LogArgument(id arg, NSString *methodName) {
+    if (arg == nil) {
+        NSLog(@"[tweak-%@] arg: (nil)", methodName);
+    } else {
+        NSLog(@"[tweak-%@] arg: (%@) %@", methodName, NSStringFromClass([arg class]), arg);
+    }
+}
+#define LogArg(arg) LogArgument(arg, [NSString stringWithFormat:@"%@ %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd)])
+
+%hook T1StatusTableViewControllerSlideshowDataSource
+- (id)viewModelForTransitionObject:(id)arg {
+    LogArg(arg);
+    %orig;
+}
+- (id)transitionCellForTransitionObject:(id)arg {
+    LogArg(arg);
+    %orig;
+}
+- (id)viewModelForTransitionObject:(id)arg {
+    LogArg(arg);
+    %orig;
+}
+- (id)indexPathForTransitionObject:(id)arg {
+    LogArg(arg);
+    %orig;
 }
 %end
