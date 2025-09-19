@@ -1564,16 +1564,23 @@ void LogArgument(id arg, NSString *methodName) {
 #define LogArg(arg) LogArgument(arg, [NSString stringWithFormat:@"%@ %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd)])
 
 %hook T1StatusTableViewControllerSlideshowDataSource
-- (id)viewModelForTransitionObject:(id)arg {
-    LogArg(arg);
-    %orig;
-}
 - (id)transitionCellForTransitionObject:(id)arg {
-    LogArg(arg);
-    %orig;
-}
-- (id)indexPathForTransitionObject:(id)arg {
-    LogArg(arg);
-    %orig;
+    if (![BHTManager HidePromoted]) return %orig;
+
+    if ([arg isKindOfClass:%c(T1TwitterMediaPreviewInfo)]) {
+        T1TwitterMediaPreviewInfo *info = (T1TwitterMediaPreviewInfo *)arg;
+        id viewModel = info.viewModel;
+
+        if ([viewModel isKindOfClass:%c(T1URTTimelineStatusItemViewModel)] &&
+            [viewModel respondsToSelector:@selector(isPromoted)]) {
+
+            BOOL isPromoted = ((BOOL (*)(id, SEL))objc_msgSend)(viewModel, @selector(isPromoted));
+            if (isPromoted) {
+                return nil;
+            }
+        }
+    }
+
+    return %orig;
 }
 %end

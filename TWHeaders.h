@@ -446,6 +446,10 @@ static NSString *_lastCopiedURL;
 @interface T1StatusTableViewControllerSlideshowDataSource : T1TwitterMediaPreviewInfoSlideshowDataSource
 @end
 
+@interface T1TwitterMediaPreviewInfo : NSObject
+@property(nonatomic, retain) id <T1StatusViewModel> viewModel;
+@end
+
 @class FLEXAlert, FLEXAlertAction;
 
 typedef void (^FLEXAlertReveal)(void);
