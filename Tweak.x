@@ -1572,10 +1572,6 @@ void LogArgument(id arg, NSString *methodName) {
     LogArg(arg);
     %orig;
 }
-- (id)viewModelForTransitionObject:(id)arg {
-    LogArg(arg);
-    %orig;
-}
 - (id)indexPathForTransitionObject:(id)arg {
     LogArg(arg);
     %orig;
