@@ -1565,22 +1565,13 @@ void LogArgument(id arg, NSString *methodName) {
 
 %hook T1StatusTableViewControllerSlideshowDataSource
 - (id)transitionCellForTransitionObject:(id)arg {
-    if (![BHTManager HidePromoted]) return %orig;
-
-    if ([arg isKindOfClass:%c(T1TwitterMediaPreviewInfo)]) {
-        T1TwitterMediaPreviewInfo *info = (T1TwitterMediaPreviewInfo *)arg;
-        id viewModel = info.viewModel;
-
-        if ([viewModel isKindOfClass:%c(T1URTTimelineStatusItemViewModel)] &&
-            [viewModel respondsToSelector:@selector(isPromoted)]) {
-
-            BOOL isPromoted = ((BOOL (*)(id, SEL))objc_msgSend)(viewModel, @selector(isPromoted));
-            if (isPromoted) {
-                return nil;
-            }
+    if ([BHTManager HidePromoted] && [arg isKindOfClass:%c(T1TwitterMediaPreviewInfo)]) {
+        NSLog(@"[tweak-check]");
+        T1URTTimelineStatusItemViewModel *viewmodel = args.viewModel;
+        if ([viewModel isPromoted]) {
+            return nil;
         }
     }
-
-    return %orig;
+    %orig;
 }
 %end
