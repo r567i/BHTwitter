@@ -1567,7 +1567,7 @@ void LogArgument(id arg, NSString *methodName) {
 - (id)transitionCellForTransitionObject:(id)arg {
     if ([BHTManager HidePromoted] && [arg isKindOfClass:%c(T1TwitterMediaPreviewInfo)]) {
         NSLog(@"[tweak-check]");
-        T1URTTimelineStatusItemViewModel *viewmodel = args.viewModel;
+        T1URTTimelineStatusItemViewModel *viewmodel = arg.viewModel;
         if ([viewModel isPromoted]) {
             return nil;
         }
