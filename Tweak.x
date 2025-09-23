@@ -1578,13 +1578,12 @@ void LogArgument(id arg, NSString *methodName) {
     }
     return %orig;
 }
-- (id)initWithStatusTableViewController:(id)arg1 accountFeatureSwitches:(id)arg2 viewModelFilterBlock:(id)arg3 {
-    NSLog(@"initWithStatusTableViewController: %s", class_getName(object_getClass(arg1)));
-    NSLog(@"accountFeatureSwitches: %s", class_getName(object_getClass(arg2)));
-    NSLog(@"viewModelFilterBlock: %s", class_getName(object_getClass(arg3)));
-    return %orig;
-}
+%end
 
+%hook T1StatusTableSlideshowManager
+- (BOOL)_t1_isPromotedTweetMediaDisabledInMultiStatusSlideshow {
+    return true;
+}
 %end
 
 %hook TFNTwitterAPICommandContext
