@@ -450,6 +450,9 @@ static NSString *_lastCopiedURL;
 @property(nonatomic, retain) id <T1StatusViewModel> viewModel;
 @end
 
+@interface TFNTwitterAPICommandContext : NSObject
+@end
+
 @class FLEXAlert, FLEXAlertAction;
 
 typedef void (^FLEXAlertReveal)(void);
