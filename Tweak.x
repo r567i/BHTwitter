@@ -1567,6 +1567,7 @@ void LogArgument(id arg, NSString *methodName) {
 %hook T1StatusTableViewControllerSlideshowDataSource
 - (id)transitionCellForTransitionObject:(id)arg {
     LogArg(arg);
+    return nil;
     if ([arg isKindOfClass:%c(T1TwitterMediaPreviewInfo)]) {
         id viewModel = [(id)arg viewModel];
         BOOL isPromoted = ((BOOL (*)(id, SEL))objc_msgSend)(viewModel, @selector(isPromoted));
@@ -1577,8 +1578,10 @@ void LogArgument(id arg, NSString *methodName) {
     }
     return %orig;
 }
-- (id)viewModelForTransitionObject:(id)arg {
-    NSLog(@"viewModelForTransitionObject: %s", class_getName(object_getClass(arg)));
+- (id)initWithStatusTableViewController:(id)arg1 accountFeatureSwitches:(id)arg2 viewModelFilterBlock:(id)arg3 {
+    NSLog(@"initWithStatusTableViewController: %s", class_getName(object_getClass(arg1)));
+    NSLog(@"accountFeatureSwitches: %s", class_getName(object_getClass(arg2)));
+    NSLog(@"viewModelFilterBlock: %s", class_getName(object_getClass(arg3)));
     return %orig;
 }
 
