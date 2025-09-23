@@ -433,6 +433,12 @@ static NSString *_lastCopiedURL;
 - (id)parentViewController;
 @end
 
+@interface TFNTwitterAPICommandContext : NSObject
+@end
+
+@interface T1StatusTableSlideshowManager : NSObject
+@end
+
 @class FLEXAlert, FLEXAlertAction;
 
 typedef void (^FLEXAlertReveal)(void);

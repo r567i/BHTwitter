@@ -952,6 +952,12 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     }
     return %orig;
 }
+- (id)homeTimelineViewController {
+    if ([BHTManager alwaysFollowingPage]) {
+        return nil;
+    }
+    return %orig;
+}
 %end
 
 %hook TFNTwitterMediaUploadConfiguration
@@ -989,7 +995,13 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
 
 %hook TFSTwitterAPICommandAccountStateProvider
 - (_Bool)allowPromotedContent {
-    return [BHTManager HidePromoted] ? true : %orig;
+    return [BHTManager HidePromoted] ? false : %orig;
+}
+%end
+
+%hook TFNTwitterAPICommandContext
+- (BOOL)allowPromotedContent {
+    return [BHTManager HidePromoted] ? false : %orig;
 }
 %end
 
@@ -1545,5 +1557,11 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %hook T1URTTimelineStatusItemViewModel
 - (BOOL)isTranslatable {
     return [BHTManager forceTranslatable] ? true : %orig;
+}
+%end
+
+%hook T1StatusTableSlideshowManager
+- (BOOL)_t1_isPromotedTweetMediaDisabledInMultiStatusSlideshow {
+    return [BHTManager HidePromoted] ? true : %orig;
 }
 %end
