@@ -1510,7 +1510,7 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 // MARK: hide ADS - New Implementation & ide tweets
 %hook TFNItemsDataViewAdapterRegistry
 - (id)dataViewAdapterForItem:(id)item {
-    NSLog(@"item_class: %s", class_getName(object_getClass(item)));
+    // NSLog(@"item_class: %s", class_getName(object_getClass(item)));
     if ([BHTManager HidePromoted]) {
         //Old Ads
         if ([item isKindOfClass:objc_getClass("T1URTTimelineStatusItemViewModel")] && ((T1URTTimelineStatusItemViewModel *)item).isPromoted) {
@@ -1577,6 +1577,11 @@ void LogArgument(id arg, NSString *methodName) {
     }
     return %orig;
 }
+- (id)viewModelForTransitionObject:(id)arg {
+    NSLog(@"viewModelForTransitionObject: %s", class_getName(object_getClass(arg)));
+    return %orig;
+}
+
 %end
 
 %hook TFNTwitterAPICommandContext
