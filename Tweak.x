@@ -1555,34 +1555,9 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 }
 %end
 
-void LogArgument(id arg, NSString *methodName) {
-    if (arg == nil) {
-        NSLog(@"[tweak-%@] arg: (nil)", methodName);
-    } else {
-        NSLog(@"[tweak-%@] arg: (%@) %@", methodName, NSStringFromClass([arg class]), arg);
-    }
-}
-#define LogArg(arg) LogArgument(arg, [NSString stringWithFormat:@"%@ %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd)])
-
-%hook T1StatusTableViewControllerSlideshowDataSource
-- (id)transitionCellForTransitionObject:(id)arg {
-    LogArg(arg);
-    return nil;
-    if ([arg isKindOfClass:%c(T1TwitterMediaPreviewInfo)]) {
-        id viewModel = [(id)arg viewModel];
-        BOOL isPromoted = ((BOOL (*)(id, SEL))objc_msgSend)(viewModel, @selector(isPromoted));
-        if (isPromoted) {
-            NSLog(@"[Tweak] isPromoted = YES, returning nil");
-            return nil;
-        }
-    }
-    return %orig;
-}
-%end
-
 %hook T1StatusTableSlideshowManager
 - (BOOL)_t1_isPromotedTweetMediaDisabledInMultiStatusSlideshow {
-    return true;
+    return [BHTManager testFeatures] ? true : %orig;
 }
 %end
 
