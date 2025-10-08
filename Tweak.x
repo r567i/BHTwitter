@@ -472,6 +472,9 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
 - (BOOL)isTranslatable {
     return [BHTManager forceTranslatable] ? true : %orig;
 }
+- (BOOL)isPossiblySensitive {
+    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
+}
 %end
 
 // MARK: DM download
@@ -1594,3 +1597,11 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 }
 %end
 
+%hook TFNTwitterCanonicalStatus
+- (BOOL)isPossiblySensitive {
+    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
+}
+- (BOOL)_tfn_assimilateIsPossiblySensitive:(BOOL)arg {
+    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
+}
+%end
