@@ -472,9 +472,6 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
 - (BOOL)isTranslatable {
     return [BHTManager forceTranslatable] ? true : %orig;
 }
-- (BOOL)isPossiblySensitive {
-    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
-}
 %end
 
 // MARK: DM download
@@ -1556,12 +1553,6 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 - (BOOL)isTranslatable {
     return [BHTManager forceTranslatable] ? true : %orig;
 }
-- (BOOL)isPossiblySensitiveViewModelForAccount:(id)arg {
-    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
-}
-- (BOOL)displaySensitiveContentAppealForAccount:(id)arg {
-    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
-}
 %end
 
 %hook T1StatusTableSlideshowManager
@@ -1573,35 +1564,5 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %hook TFNTwitterAPICommandContext
 - (BOOL)allowPromotedContent {
     return [BHTManager HidePromoted] ? false : %orig;
-}
-%end
-
-%hook T1MediaAttachmentsViewCell
-- (void)setContentHidden:(BOOL)arg {
-    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
-}
-- (BOOL)isContentHidden {
-    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
-}
-- (void)setShowsSensitiveWarningButton:(BOOL)arg {
-    return [BHTManager testFeatures] ? false : %orig;
-}
-- (BOOL)showsSensitiveWarningButtun {
-    return [BHTManager testFeatures] ? false : %orig;
-}
-%end
-
-%hook T1FiltersViewController
-- (BOOL)shouldShowSensitiveMediaOption {
-    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
-}
-%end
-
-%hook TFNTwitterCanonicalStatus
-- (BOOL)isPossiblySensitive {
-    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
-}
-- (BOOL)_tfn_assimilateIsPossiblySensitive:(BOOL)arg {
-    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
 }
 %end
