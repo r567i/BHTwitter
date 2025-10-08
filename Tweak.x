@@ -1553,11 +1553,17 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 - (BOOL)isTranslatable {
     return [BHTManager forceTranslatable] ? true : %orig;
 }
+- (BOOL)isPossiblySensitiveViewModelForAccount:(id)arg {
+    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
+}
+- (BOOL)displaySensitiveContentAppealForAccount:(id)arg {
+    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
+}
 %end
 
 %hook T1StatusTableSlideshowManager
 - (BOOL)_t1_isPromotedTweetMediaDisabledInMultiStatusSlideshow {
-    return [BHTManager testFeatures] ? true : %orig;
+    return [BHTManager HidePromoted] ? true : %orig;
 }
 %end
 
@@ -1566,3 +1572,5 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     return [BHTManager HidePromoted] ? false : %orig;
 }
 %end
+
+
