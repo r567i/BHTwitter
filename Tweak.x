@@ -1573,4 +1573,24 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 }
 %end
 
+%hook T1MediaAttachmentsViewCell
+- (void)setContentHidden:(BOOL)arg {
+    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
+}
+- (BOOL)isContentHidden {
+    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
+}
+- (void)setShowsSensitiveWarningButton:(BOOL)arg {
+    return [BHTManager testFeatures] ? false : %orig;
+}
+- (BOOL)showsSensitiveWarningButtun {
+    return [BHTManager testFeatures] ? false : %orig;
+}
+%end
+
+%hook T1FiltersViewController
+- (BOOL)shouldShowSensitiveMediaOption {
+    return [BHTManager disableSensitiveTweetWarnings] ? false : %orig;
+}
+%end
 
