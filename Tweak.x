@@ -902,6 +902,10 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
         return false;
     }
 
+    if ([BHTManager disableSensitiveTweetWarnings] && [key isEqualToString:@"sensitive_tweet_warnings_enabled"]) {
+        return false;
+    }
+
     if ([BHTManager hidePremiumOffer] &&
     ([key containsString:@"subscription"] || [key containsString:@"monetiz"])) {
         return false;
@@ -1532,7 +1536,7 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
         }
     }
 
-    if (![item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+    if (![item isKindOfClass:objc_getClass("T1URTTimelineStatusItemViewModel")]) {
         NSLog(@"item_class: %s", class_getName(object_getClass(item)));
     }
     return %orig;
@@ -1570,3 +1574,6 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     return [BHTManager HidePromoted] ? false : %orig;
 }
 %end
+
+// %hook HFSensitiveTweetBlurredInterstitialViewModel
+// %end
