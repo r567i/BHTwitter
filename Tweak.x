@@ -465,6 +465,7 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
 }
 - (id)registeredDataViewAdapterForItem:(id)arg {
     NSLog(@"TFNItemsDataViewController: %s", class_getName(object_getClass(arg)));
+    %orig;
 }
 %end
 
@@ -1604,5 +1605,6 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 %hook TFNItemsDataViewSectionController
 - (id)registeredDataViewAdapterForItem:(id)arg {
     NSLog(@"registeredDataViewAdapterForItem: %s", class_getName(object_getClass(arg)));
+    %orig;
 }
 %end
