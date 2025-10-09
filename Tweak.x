@@ -1531,6 +1531,10 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
             return nil;
         }
     }
+
+    if (![item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
+        NSLog(@"item_class: %s", class_getName(object_getClass(item)));
+    }
     return %orig;
 }
 %end
