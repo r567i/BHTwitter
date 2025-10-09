@@ -463,6 +463,9 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     }
     return %orig;
 }
+- (id)registeredDataViewAdapterForItem:(id)arg {
+    NSLog(@"TFNItemsDataViewController: %s", class_getName(object_getClass(arg)));
+}
 %end
 
 %hook TFNTwitterStatus
@@ -1535,10 +1538,6 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
             return nil;
         }
     }
-
-    if (![item isKindOfClass:objc_getClass("T1URTTimelineStatusItemViewModel")]) {
-        NSLog(@"item_class: %s", class_getName(object_getClass(item)));
-    }
     return %orig;
 }
 %end
@@ -1575,30 +1574,35 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 }
 %end
 
-%hook HFSensitiveTweetBlurredInterstitialViewModel
-- (id)initWithImageInterstitial:(id)arg {
-    NSLog(@"initWithImageInterstitial: %s", class_getName(object_getClass(arg)));
-}
-- (id)initWithWarnings:(id)arg {
-    NSLog(@"initWithWarnings: %s", class_getName(object_getClass(arg)));
+// %hook HFSensitiveTweetBlurredInterstitialViewModel
+// - (id)initWithImageInterstitial:(id)arg {
+//     NSLog(@"initWithImageInterstitial: %s", class_getName(object_getClass(arg)));
+// }
+// - (id)initWithWarnings:(id)arg {
+//     NSLog(@"initWithWarnings: %s", class_getName(object_getClass(arg)));
+// }
+// %end
+
+// %hook T1StatusPhotoVideoForwardView
+// - (void)_t1_updateForImageStateSensitive {
+//     NSLog(@"_t1_updateForImageStateSensitive call");
+// }
+// - (void)sensitiveTweetVisibilityDidUpdate:(id)arg {
+//     NSLog(@"sensitiveTweetVisibilityDidUpdate: %s", class_getName(object_getClass(arg)));
+// }
+// - (void)blurViewVisibilityDidChange:(BOOL)arg {
+//     NSLog(@"blurViewVisibilityDidChange: %d", arg);
+// }
+// - (void)_t1_updateBlurredInterstitialView {
+//     NSLog(@"_t1_updateBlurredInterstitialView call");
+// }
+// - (void)_t1_layout_blurredInterstitialView {
+//     NSLog(@"_t1_layout_blurredInterstitialView call");
+// }
+// %end
+
+%hook TFNItemsDataViewSectionController
+- (id)registeredDataViewAdapterForItem:(id)arg {
+    NSLog(@"registeredDataViewAdapterForItem: %s", class_getName(object_getClass(arg)));
 }
 %end
-
-%hook T1StatusPhotoVideoForwardView
-- (void)_t1_updateForImageStateSensitive {
-    NSLog(@"_t1_updateForImageStateSensitive call");
-}
-- (void)sensitiveTweetVisibilityDidUpdate:(id)arg {
-    NSLog(@"sensitiveTweetVisibilityDidUpdate: %s", class_getName(object_getClass(arg)));
-}
-- (void)blurViewVisibilityDidChange:(BOOL)arg {
-    NSLog(@"blurViewVisibilityDidChange: %d", arg);
-}
-- (void)_t1_updateBlurredInterstitialView {
-    NSLog(@"_t1_updateBlurredInterstitialView call");
-}
-- (void)_t1_layout_blurredInterstitialView {
-    NSLog(@"_t1_layout_blurredInterstitialView call");
-}
-%end
-
