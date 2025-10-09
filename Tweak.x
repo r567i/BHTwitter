@@ -463,10 +463,6 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     }
     return %orig;
 }
-- (id)registeredDataViewAdapterForItem:(id)arg {
-    NSLog(@"TFNItemsDataViewController: %s", class_getName(object_getClass(arg)));
-    %orig;
-}
 %end
 
 %hook TFNTwitterStatus
@@ -903,10 +899,6 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     }
 
     if ([key isEqualToString:@"explore_relaunch_enable_immersive_player_across_twitter"]) {
-        return false;
-    }
-
-    if ([BHTManager disableSensitiveTweetWarnings] && [key isEqualToString:@"sensitive_tweet_warnings_enabled"]) {
         return false;
     }
 
@@ -1575,36 +1567,3 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 }
 %end
 
-// %hook HFSensitiveTweetBlurredInterstitialViewModel
-// - (id)initWithImageInterstitial:(id)arg {
-//     NSLog(@"initWithImageInterstitial: %s", class_getName(object_getClass(arg)));
-// }
-// - (id)initWithWarnings:(id)arg {
-//     NSLog(@"initWithWarnings: %s", class_getName(object_getClass(arg)));
-// }
-// %end
-
-// %hook T1StatusPhotoVideoForwardView
-// - (void)_t1_updateForImageStateSensitive {
-//     NSLog(@"_t1_updateForImageStateSensitive call");
-// }
-// - (void)sensitiveTweetVisibilityDidUpdate:(id)arg {
-//     NSLog(@"sensitiveTweetVisibilityDidUpdate: %s", class_getName(object_getClass(arg)));
-// }
-// - (void)blurViewVisibilityDidChange:(BOOL)arg {
-//     NSLog(@"blurViewVisibilityDidChange: %d", arg);
-// }
-// - (void)_t1_updateBlurredInterstitialView {
-//     NSLog(@"_t1_updateBlurredInterstitialView call");
-// }
-// - (void)_t1_layout_blurredInterstitialView {
-//     NSLog(@"_t1_layout_blurredInterstitialView call");
-// }
-// %end
-
-%hook TFNItemsDataViewSectionController
-- (id)registeredDataViewAdapterForItem:(id)arg {
-    NSLog(@"registeredDataViewAdapterForItem: %s", class_getName(object_getClass(arg)));
-    %orig;
-}
-%end
