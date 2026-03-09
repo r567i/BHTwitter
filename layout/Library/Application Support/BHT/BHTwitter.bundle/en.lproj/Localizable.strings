@@ -127,8 +127,8 @@
 
 "FORCE_TRANSLATABLE_OPTION_TITLE" = "Force Translatable";
 
-"MUTE_RETWEETS_FOR_USERS_OPTION_TITLE" = "Mute Retweets For Users"
-"MUTE_RETWEETS_FOR_USERS_OPTION_DETAIL_TITLE" = "Mute Retweets For Users in Lists Timeline"
+"MUTE_RETWEETS_FOR_USERS_OPTION_TITLE" = "Mute Retweets For Users";
+"MUTE_RETWEETS_FOR_USERS_OPTION_DETAIL_TITLE" = "Mute Retweets For Users in Lists Timeline";
 
 "TWITTER_BLUE_SECTION_HEADER_TITLE" = "Twitter blue features";
 "UNDO_TWEET_OPTION_TITLE" = "Undo tweets feature";
