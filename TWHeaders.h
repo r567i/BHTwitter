@@ -395,6 +395,7 @@ static NSString *_lastCopiedURL;
 @property(nonatomic, readonly) NSString *text;
 @property(nonatomic, readonly) NSString *scribeComponent;
 @property(nonatomic, readonly) _Bool isPromoted;
+@property(nonatomic, readonly) _Bool isRetweet;
 @property(nonatomic, retain) id <TFNTwitterStatusBanner> banner;
 @property(nonatomic, readonly) TFNTwitterUser *fromUser;
 @property(nonatomic, readonly) TFNTwitterUser *representedFromUser;
