@@ -69,6 +69,9 @@ static BOOL ShouldHideRetweetForUser(T1URTTimelineStatusItemViewModel *model) {
     if (![BHTManager muteRetweetsForUsers]) {
         return NO;
     }
+    if (!model.isRetweet) {
+        return NO;
+    }
     if (![model.scribeComponent isEqualToString:@"suggest_organic_list_tweet"]) {
         return NO;
     }
