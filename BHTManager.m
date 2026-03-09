@@ -287,6 +287,9 @@
 + (BOOL)forceTranslatable {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"force_translatable"];
 }
++ (BOOL)muteRetweetsForUsers {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"mute_retweets_for_users"];
+}
 + (UIViewController *)BHTSettingsWithAccount:(TFNTwitterAccount *)twAccount {
     SettingsViewController *pref = [[SettingsViewController alloc] initWithTwitterAccount:twAccount];
     [pref.navigationItem setTitleView:[objc_getClass("TFNTitleView") titleViewWithTitle:@"BHTwitter" subtitle:twAccount.displayUsername]];

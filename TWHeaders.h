@@ -388,6 +388,7 @@ static NSString *_lastCopiedURL;
 
 @interface TFNTwitterUser : NSObject
 @property(readonly, nonatomic) TFSTwitterRelationship *relationship;
+@property(readonly, nonatomic) NSString *username;
 @end
 
 @interface T1URTTimelineStatusItemViewModel : NSObject

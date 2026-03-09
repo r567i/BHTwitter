@@ -67,5 +67,6 @@
 + (BOOL)changeTranslateLang;
 + (NSString *)translateLang;
 + (BOOL)forceTranslatable;
++ (BOOL)muteRetweetsForUsers;
 @end
 

@@ -203,6 +203,8 @@
 
         PSSpecifier *forceTranslatable = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"FORCE_TRANSLATABLE_OPTION_TITLE"] detailTitle:nil key:@"force_translatable" defaultValue:false changeAction:nil];
 
+        PSSpecifier *muteRetweetsForUsers = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"MUTE_RETWEETS_FOR_USERS_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"MUTE_RETWEETS_FOR_USERS_OPTION_DETAIL_TITLE"] key:@"mute_retweets_for_users" defaultValue:false changeAction:nil];
+
         // Twitter bule section
         PSSpecifier *undoTweet = [self newSwitchCellWithTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"UNDO_TWEET_OPTION_TITLE"] detailTitle:[[BHTBundle sharedBundle] localizedStringForKey:@"UNDO_TWEET_OPTION_DETAIL_TITLE"] key:@"undo_tweet" defaultValue:false changeAction:nil];
         
@@ -264,6 +266,7 @@
             hideBlockedAccountTweets,
             hideMutedAccountTweets,
             onlyInLists,
+            muteRetweetsForUsers,
             hideWhoToFollow,
             hideTopicsToFollow,
             hidePremiumOffer,

@@ -65,6 +65,31 @@ static BOOL ShouldHideTweetForUser(T1URTTimelineStatusItemViewModel *model) {
     return NO;
 }
 
+static BOOL ShouldHideRetweetForUser(T1URTTimelineStatusItemViewModel *model) {
+    if (![BHTManager muteRetweetsForUsers]) {
+        return NO;
+    }
+    if (![model.scribeComponent isEqualToString:@"suggest_organic_list_tweet"]) {
+        return NO;
+    }
+
+    TFNTwitterUser *retweetUser = model.fromUser;
+    if (!retweetUser) {
+        return NO;
+    }
+    NSArray *muteRetweetsForUsersArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"muteRetweetsForUsersArray"];
+    if (!muteRetweetsForUsersArray) {
+        NSMutableArray *emptyArray = [NSMutableArray array];
+        [[NSUserDefaults standardUserDefaults] setObject:emptyArray forKey:@"muteRetweetsForUsersArray"];
+        return NO;
+    }
+    if ([muteRetweetsForUsersArray containsObject:retweetUser.username]) {
+        return YES;
+    }
+
+    return NO;
+}
+
 // MARK: Clean cache and Padlock
 %hook T1AppDelegate
 - (_Bool)application:(UIApplication *)application didFinishLaunchingWithOptions:(id)arg2 {
@@ -1528,6 +1553,9 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 
     if ([item isKindOfClass:%c(T1URTTimelineStatusItemViewModel)]) {
         if (ShouldHideTweetForUser(item)) {
+            return nil;
+        }
+        if (ShouldHideRetweetForUser(item)) {
             return nil;
         }
     }
