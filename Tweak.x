@@ -1584,6 +1584,13 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 - (BOOL)isTranslatable {
     return [BHTManager forceTranslatable] ? true : %orig;
 }
+- (BOOL)isRetweet {
+    NSString *origText = [self valueForKey:@"originalText"];
+    if ([BHTManager testFeatures] && [origText hasPrefix:@"RT @"]) {
+        return true;
+    }
+    return %orig;
+}
 %end
 
 %hook T1StatusTableSlideshowManager
