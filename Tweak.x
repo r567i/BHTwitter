@@ -1605,3 +1605,29 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 }
 %end
 
+
+%hook TFSTwitterEntityMedia
+- (NSString *)originalDisplayURL {
+    NSString *originalURL = %orig;
+    if (originalURL && [originalURL containsString:@"pic.x.com"]) {
+        return [originalURL stringByReplacingOccurrencesOfString:@"pic.x.com" withString:@"pic.twitter.com"];
+    }
+    return originalURL;
+}
+
+- (NSString *)displayURL {
+    NSString *originalURL = %orig;
+    if (originalURL && [originalURL containsString:@"pic.x.com"]) {
+        return [originalURL stringByReplacingOccurrencesOfString:@"pic.x.com" withString:@"pic.twitter.com"];
+    }
+    return originalURL;
+}
+
+- (NSString *)accessibilityText {
+    NSString *originalText = %orig;
+    if (originalText && [originalText containsString:@"pic.x.com"]) {
+        return [originalText stringByReplacingOccurrencesOfString:@"pic.x.com" withString:@"pic.twitter.com"];
+    }
+    return originalText;
+}
+%end

@@ -83,6 +83,12 @@ static NSString *_lastCopiedURL;
 @property (nonatomic, strong) id scribe;
 @end
 
+@interface TFSTwitterEntityMedia : NSObject
+@property(nonatomic, retain) NSString *originalDisplayURL;
+@property(nonatomic, retain) NSString *displayURL;
+@property(nonatomic, retain) NSString *accessibilityText;
+@end
+
 @interface T1StandardStatusAttachmentViewAdapter : NSObject
 @property (nonatomic, assign, readonly) NSUInteger attachmentType;
 @end
