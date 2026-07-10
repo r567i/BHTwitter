@@ -1419,7 +1419,7 @@ static BOOL ShouldHideRetweetForUser(T1URTTimelineStatusItemViewModel *model) {
     if ([BHTManager alwaysFollowingPage] && 
         [[self.parentViewController class] isEqual:NSClassFromString(@"THFHomeTimelineContainerViewController")] &&
         originalIndex == 0) {
-        return %orig(1);;
+        return %orig(1);
     }
    return %orig(originalIndex);
 }
