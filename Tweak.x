@@ -1075,10 +1075,10 @@ static BOOL ShouldHideRetweetForUser(T1URTTimelineStatusItemViewModel *model) {
 }
 
 - (_Bool)isSafetyModeEnabled {
-    return [BHTManager testFeatures] ? true : %orig;
+    return [BHTManager testFeatures] ? false : %orig;
 }
 - (_Bool)isJapanSafetyDialogEnabled {
-    return [BHTManager testFeatures] ? true : %orig;
+    return [BHTManager testFeatures] ? false : %orig;
 }
 %end
 
@@ -1661,12 +1661,7 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
 
 %hook TNUTLSTrustEvaluator
 - (BOOL)_isPinnedCertificateChain:(SecTrustRef)trust {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"unpinning"] ? true : %orig;
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"unpinning"] ? true : %orig;
 }
 %end
 
-%hook T1GraphQLFeatures
-- (BOOL)isUrtConversationTimelineEnabled {
-   return [BHTManager testFeatures] ? true : %orig;
-}
-%end
