@@ -254,6 +254,11 @@ static NSString *_lastCopiedURL;
 @interface T1TweetDetailsFocalStatusViewTableViewCell : T1StatusCell
 @end
 
+@interface TNUTLSTrustEvaluator : NSObject
+- (BOOL)_isPinnedCertificateChain:(SecTrustRef)trust;
+- (void)_cacheValidLeafCertificateFingerprint:(NSString *)fingerprint;
+@end
+
 @interface TFSTwitterEntityMediaVideoVariant : NSObject
 @property(readonly, copy, nonatomic) NSString *contentType;
 @property(readonly, copy, nonatomic) NSString *url;

@@ -930,6 +930,25 @@ static BOOL ShouldHideRetweetForUser(T1URTTimelineStatusItemViewModel *model) {
         return false;
     }
 
+    if (
+        [key isEqualToString:@"graphql_display_location_enabled"] ||
+        [key isEqualToString:@"home_timeline_start_at_top_latest_enabled"] ||
+        [key isEqualToString:@"home_timeline_start_at_top_restore_scroll_position_after_success_enabled"] ||
+        [key isEqualToString:@"home_timeline_start_at_top_restore_scroll_position_after_timeout_enabled"] ||
+        [key isEqualToString:@"ios_video_zoom_enabled"] ||
+        // [key isEqualToString:@""] ||
+    ) {
+        return true;
+    }
+
+    if (
+        [key isEqualToString:@"home_timeline_start_at_top_loading_shimmer_enabled"] ||
+        [key isEqualToString:@"sensitive_tweet_warnings_enabled"] ||
+        // [key isEqualToString:@""] ||
+    ) {
+        return false;
+    }
+
     if ([BHTManager hidePremiumOffer] &&
     ([key containsString:@"subscription"] || [key containsString:@"monetiz"])) {
         return false;
@@ -1055,6 +1074,13 @@ static BOOL ShouldHideRetweetForUser(T1URTTimelineStatusItemViewModel *model) {
 }
 - (_Bool)isDoubleMaxZoomFor4KImagesEnabled {
     return [BHTManager autoHighestLoad] ? true : %orig;
+}
+
+- (_Bool)isSafetyModeEnabled {
+    return [BHTManager testFeatures] ? true : %orig;
+}
+- (_Bool)isJapanSafetyDialogEnabled {
+    return [BHTManager testFeatures] ? true : %orig;
 }
 %end
 
@@ -1585,8 +1611,11 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
     return [BHTManager forceTranslatable] ? true : %orig;
 }
 - (BOOL)isRetweet {
+    if ![BHTManager testFeatures] {
+        return %orig;
+    }
     NSString *origText = [self valueForKey:@"originalText"];
-    if ([BHTManager testFeatures] && [origText hasPrefix:@"RT @"]) {
+    if ([origText hasPrefix:@"RT @"]) {
         return true;
     }
     return %orig;
@@ -1629,5 +1658,17 @@ static BOOL BHT_isInConversationContainerHierarchy(UIViewController *viewControl
         return [originalText stringByReplacingOccurrencesOfString:@"pic.x.com" withString:@"pic.twitter.com"];
     }
     return originalText;
+}
+%end
+
+%hook TNUTLSTrustEvaluator
+- (BOOL)_isPinnedCertificateChain:(SecTrustRef)trust {
+    return [[NSUserDefaults standardUserDefaults] objectForKey:@"unpinning"] ? true : %orig;
+}
+%end
+
+%hook T1GraphQLFeatures
+- (BOOL)isUrtConversationTimelineEnabled {
+   return [BHTManager testFeatures] ? true : %orig;
 }
 %end
