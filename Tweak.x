@@ -935,14 +935,14 @@ static BOOL ShouldHideRetweetForUser(T1URTTimelineStatusItemViewModel *model) {
         [key isEqualToString:@"home_timeline_start_at_top_latest_enabled"] ||
         [key isEqualToString:@"home_timeline_start_at_top_restore_scroll_position_after_success_enabled"] ||
         [key isEqualToString:@"home_timeline_start_at_top_restore_scroll_position_after_timeout_enabled"] ||
-        [key isEqualToString:@"ios_video_zoom_enabled"] ||
+        [key isEqualToString:@"ios_video_zoom_enabled"]
     ) {
         return true;
     }
 
     if (
         [key isEqualToString:@"home_timeline_start_at_top_loading_shimmer_enabled"] ||
-        [key isEqualToString:@"sensitive_tweet_warnings_enabled"] ||
+        [key isEqualToString:@"sensitive_tweet_warnings_enabled"]
     ) {
         return false;
     }
